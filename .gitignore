@@ -1,0 +1,4 @@
+/gbuddy_backend/.env
+/gbuddy_backend/node_modules
+/gbuddy_frontend/node_modules
+/gbuddy_frontend/.env
