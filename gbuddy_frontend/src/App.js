@@ -6,7 +6,7 @@ import SignUp from './pages/Signup';
 import UserHome from './pages/UserHome';
 import NotesHub from './pages/Notes/NotesHub';
 import NotesLibrary from './pages/Notes/NotesLibrary';
-
+import UploadNotes from './pages/Notes/uploadNotes';
 
 function App() {
   return (
@@ -18,7 +18,8 @@ function App() {
         <Route path='/signup' element={<SignUp/>}/>
         <Route path='/home' element={<UserHome/>}/>
         <Route path='/notes' element={<NotesHub/>}/>
-        <Route path='/notes/library' element={<NotesLibrary/>}/>
+        <Route path='/notes/all' element={<NotesLibrary/>}/>
+        <Route path='/notes/upload' element={<UploadNotes/>}/>
       </Routes>
     </BrowserRouter>
 );
