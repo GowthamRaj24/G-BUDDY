@@ -12,7 +12,9 @@ const notesSchema = mongoose.Schema({
     description: { type: String },
     faculty: { type: String },
     documentUrl: { type: String, required: true },
-    date: { type: Date, default: Date.now }
+    date: { type: Date, default: Date.now },
+    relatedVideos : { type: Array },
+
 }, {
     timestamps: true
 });

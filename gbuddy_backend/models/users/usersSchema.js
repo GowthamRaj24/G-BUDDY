@@ -19,7 +19,8 @@ const usersSchema = mongoose.Schema({
     phone: { type: String, required: true },
     wallet: { type: Number, default: 0 },
     savedFiles: [{ type: String }],
-    cart: [{ type: String }]
+    cart: [{ type: String }],
+    savedNotes : [{ type: String }],
 }, {
     timestamps: true
 });

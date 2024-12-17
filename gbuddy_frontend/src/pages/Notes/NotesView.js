@@ -153,7 +153,7 @@ const NotesView = () => {
                             className="flex items-center px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors"
                         >
                             <FaPlus className="mr-2" />
-                            Add Video
+                            Contribute Video
                         </button>
                     </div>
                     
