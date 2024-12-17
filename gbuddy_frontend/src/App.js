@@ -7,6 +7,8 @@ import UserHome from './pages/UserHome';
 import NotesHub from './pages/Notes/NotesHub';
 import NotesLibrary from './pages/Notes/NotesLibrary';
 import UploadNotes from './pages/Notes/uploadNotes';
+import SavedNotes from './pages/Notes/savedNotes';
+import NotesView from './pages/Notes/NotesView';
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
         <Route path='/notes' element={<NotesHub/>}/>
         <Route path='/notes/all' element={<NotesLibrary/>}/>
         <Route path='/notes/upload' element={<UploadNotes/>}/>
+        <Route path='/notes/saved' element={<SavedNotes/>}/>
+        <Route path='/notes/view' element={<NotesView/>}/>
       </Routes>
     </BrowserRouter>
 );
