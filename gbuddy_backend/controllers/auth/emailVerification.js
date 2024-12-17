@@ -1,4 +1,4 @@
-const User = require('../../models/userSchema');
+const User = require('../../models/users/usersSchema');
 const sendEmail = require('../../utils/sendEmail');
 
 // Generate 6 digit OTP
@@ -8,24 +8,21 @@ const generateOTP = () => {
 
 const sendOTP = async (req, res) => {
     try {
-        const user = await User.findOne({ email: req.body.email });
-        
         const otp = generateOTP();
-        user.otp = otp;
-        user.otpExpiry = Date.now() + 10 * 60 * 1000; // 10 minutes
-        await user.save();
 
         await sendEmail(
-            user.email,
-            "Your OTP Code",
+            req.body.email,
+            "WELCOME TO G-BUDDY | Your OTP Code",
             `Your OTP is: ${otp}`
         );
 
         res.status(200).json({
             success: true,
-            message: "OTP sent successfully"
+            message: "OTP sent successfully",
+            otp : otp
         });
     } catch (error) {
+        console.log(error)
         res.status(500).json({
             success: false,
             message: "Failed to send OTP",
@@ -36,29 +33,27 @@ const sendOTP = async (req, res) => {
 
 const verifyOTP = async (req, res) => {
     try {
-        const user = await User.findOne({
-            email: req.body.email,
-            otp: req.body.otp,
-            otpExpiry: { $gt: Date.now() }
-        });
+        const user = {
+            email : req.body.email,
+            enteredotp: req.body.enteredotp,
+            sentotp : req.body.sentotp
+        }
 
-        if (!user) {
+        if (user.enteredotp != user.sentotp) {
             return res.status(400).json({
                 success: false,
                 message: "Invalid or expired OTP"
             });
         }
 
-        user.isVerified = true;
-        user.otp = undefined;
-        user.otpExpiry = undefined;
-        await user.save();
 
         res.status(200).json({
             success: true,
             message: "Email verified successfully"
         });
+
     } catch (error) {
+        console.log(error)
         res.status(500).json({
             success: false,
             message: "OTP verification failed",

@@ -1,6 +1,9 @@
-const User = require('../../models/userSchema');
+const User = require('../../models/users/usersSchema');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+
+const JWT_SECRET= 123000; 
+
 
 const signup = async (req, res) => {
     try {
@@ -35,13 +38,11 @@ const signup = async (req, res) => {
             password: hashedPassword,
             phone: req.body.phone
         });
-
-        const token = jwt.sign(
-            { userId: user._id },
-            process.env.JWT_SECRET,
-            { expiresIn: '24h' }
-        );
+        
+        const token = jwt.sign({ userId: user._id },10);
+        console.log(token);
         const { password, ...userWithoutPassword } = user.toObject();
+        console.log(userWithoutPassword);
 
         res.status(201).json({
             success: true,

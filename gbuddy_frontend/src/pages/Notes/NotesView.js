@@ -13,10 +13,10 @@ const NotesView = () => {
     const [videos, setVideos] = useState([]);
 
     const studyTips = [
-            {
-                title: "Active Recall",
-                description: "Test yourself frequently. Create flashcards and practice problems to reinforce learning.",
-                icon: "🧠"
+        {
+        title: "Active Recall",
+        description: "Test yourself frequently. Create flashcards and practice problems to reinforce learning.",
+        icon: "🧠"
             },
             {
                 title: "Spaced Repetition",
@@ -26,7 +26,7 @@ const NotesView = () => {
             {
                 title: "Mind Mapping",
                 description: "Create visual connections between concepts to understand relationships better.",
-                icon: "🗺️"
+         icon: "🗺️"
             },
             {
                 title: "Teach Others",

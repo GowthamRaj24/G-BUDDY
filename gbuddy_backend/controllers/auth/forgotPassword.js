@@ -1,4 +1,4 @@
-const User = require('../../models/userSchema');
+const User = require('../../models/users/usersSchema');
 const bcrypt = require('bcrypt');
 const sendEmail = require('../../utils/sendEmail');
 
