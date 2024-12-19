@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import image from "./developer-avatar.jpg";
+import { useNavigate } from 'react-router-dom';
 import { 
     FaPython, FaJava, FaHtml5, FaCss3, FaServer, 
     FaLightbulb, FaUsers, FaCode ,FaStore , FaCalendarAlt
@@ -32,8 +33,35 @@ import "./main.css"
 
 import { PrimaryButton, SecondaryButton } from '../components/Button';
 import { FeatureCard } from '../components/Card';
+import axios from 'axios';
 
 const Dashboard = () => {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            const user = JSON.parse(localStorage.getItem("user"));
+            if (!user) return;
+
+            try {
+                const response = await axios.get(`http://localhost:4001/users/fetchUser/${user._id}`, {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+
+                if (response.data.success) {
+                    navigate('/home');  // Using React Router's navigate
+                }
+            } catch (error) {
+                console.log('Error fetching user:', error);
+            }
+        };
+
+        fetchUser();
+    }, []);
+
+
     return (
         <>
         <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50">
