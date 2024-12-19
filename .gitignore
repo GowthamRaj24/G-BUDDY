@@ -5,3 +5,4 @@
 /gbuddy_backend/driveAPI
 /gbuddy_backend/middleware
 /gbuddy_backend/db.js
+/gbuddy_backend/.env
