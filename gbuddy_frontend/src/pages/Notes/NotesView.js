@@ -20,7 +20,11 @@ const NotesView = () => {
 
     const fetchNoteData = async () => {
         try {
-            const response = await axios.get(`http://localhost:4001/notes/${noteId}`);
+            const response = await axios.get(`http://localhost:4001/notes/${noteId}`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+          });
             setNoteData(response.data.data);
             setVideos(response.data.data.relatedVideos || []);
         } catch (error) {
@@ -37,7 +41,11 @@ const NotesView = () => {
             await axios.post('http://localhost:4001/notes/saveNote', {
                 noteId,
                 userId: user._id
-            });
+            }, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+          });
             setIsBookmarked(!isBookmarked);
             
             const updatedUser = { ...user };
@@ -63,7 +71,11 @@ const NotesView = () => {
                 noteId,
                 videoTitle: videoData.title,
                 videoUrl: videoData.embedId
-            });
+            }, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+          });
             setVideos(response.data.data.relatedVideos);
             setIsModalOpen(false);
         } catch (error) {

@@ -30,7 +30,11 @@ const EditProfile = () => {
     const fetchUserData = async () => {
         try {
             const userId = JSON.parse(localStorage.getItem('user'))._id;
-            const response = await axios.get(`http://localhost:4001/users/fetchUser/${userId}`);
+            const response = await axios.get(`http://localhost:4001/users/fetchUser/${userId}`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+          });
             setFormData(response.data.data);
         } catch (error) {
             setError('Failed to fetch user data');
@@ -44,7 +48,11 @@ const EditProfile = () => {
 
         try {
             const userId = JSON.parse(localStorage.getItem('user'))._id;
-            const response = await axios.put(`http://localhost:4001/users/updateProfile/${userId}`, formData);
+            const response = await axios.put(`http://localhost:4001/users/updateProfile/${userId}`, formData, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+          });
             localStorage.setItem('user', JSON.stringify(response.data.data));
             navigate('/profile' + userId);
         } catch (error) {

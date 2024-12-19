@@ -1,8 +1,12 @@
+const Product = require("../../models/products/productsSchema");
+const driveService = require('../../driveAPI/googleDrive');
+const User = require('../../models/users/usersSchema');
+
 const deleteProduct = async (req, res) => {
     try {
-        const { productId } = req.params;
-        const product = await Product.findById(productId);
-
+        const  productId  = req.params.id;
+        const product = await  Product.findById(productId);
+        console.log(product);
         if (!product) {
             return res.status(404).json({
                 success: false,
@@ -10,11 +14,17 @@ const deleteProduct = async (req, res) => {
             });
         }
 
-        // Delete images from Google Drive
         for (const imageUrl of product.images) {
-            const fileId = imageUrl.match(/[-\w]{25,}/)[0];
-            await deleteFromDrive(fileId);
+            const fileId = imageUrl.split('id=')[1]; // Extract 
+            await driveService.files.delete({
+                fileId: fileId
+            });
         }
+
+        // Update user's products array
+        await User.findByIdAndUpdate(product.sellerId, {
+            $pull: { products: productId }
+        });
 
         // Delete product from database
         await Product.findByIdAndDelete(productId);
@@ -32,6 +42,5 @@ const deleteProduct = async (req, res) => {
         });
     }
 };
-
 
 exports.deleteProduct = deleteProduct;

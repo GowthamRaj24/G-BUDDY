@@ -2,9 +2,10 @@ const Roadmap = require('../../models/roadmap/roadmapSchema');
 
 const getRoadmap = async (req, res) => {
     try {
+        console.log(req.params.id);
         const roadmap = await Roadmap.findById(req.params.id)
-            .populate('author', 'name email');
-
+            
+        console.log(roadmap);
         res.status(200).json({
             success: true,
             data: roadmap
@@ -36,17 +37,37 @@ const getAllRoadmaps = async (req, res) => {
         });
     }
 };
-// Get roadmaps by category
-const getRoadmapsByCategory = async (req, res) => {
+
+const getRoadmapsByUser = async (req, res) => {
     try {
-        const roadmaps = await Roadmap.find({ category: req.params.category })
-            .populate('author', 'name email');
+        const roadmaps = await Roadmap.find({ author: req.params.userId });
 
         res.status(200).json({
             success: true,
             count: roadmaps.length,
             data: roadmaps
         });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "Failed to fetch roadmaps",
+            error: error.message
+        });
+    }
+};
+
+exports.getRoadmapsByUser = getRoadmapsByUser;
+
+const getRoadmapsByCategory = async (req, res) => {
+    try {
+        const roadmaps = await Roadmap.find({ category : req.params.category })
+
+        res.status(200).json({
+            success: true,
+            count: roadmaps.length,
+            data: roadmaps
+        });
+
     } catch (error) {
         res.status(500).json({
             success: false,

@@ -74,7 +74,11 @@ const NotesHub = () => {
     const fetchLatestNotes = async () => {
         try {
             setLoading(true);
-            const response = await axios.post('http://localhost:4001/notes/getLatestNotes');
+            const response = await axios.post('http://localhost:4001/notes/getLatestNotes', {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+          });
             setNotes(response.data.data);
             setLoading(false);
         } catch (error) {

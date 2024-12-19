@@ -13,12 +13,12 @@ const middleware = require("../middleware/auth");
 const routes = express.Router();
 
 routes
-    .post("/addProduct",upload.array('images', 5), addProduct.addProduct)
-    .get("/getProductsByCategory/:category", fetchProduct.getProductsByCategory)
-    .get("/fetchProduct", fetchProduct.getAllProducts)
-    .get("/getProduct/:id", fetchProduct.getProductById)
-    .get("/fetchProductBySeller/:sellerId", fetchProduct.getProductsBySeller)
+    .post("/addProduct",middleware.auth,upload.array('images', 5), addProduct.addProduct)
+    .get("/getProductsByCategory/:category", middleware.auth,fetchProduct.getProductsByCategory)
+    .get("/fetchProduct", middleware.auth,fetchProduct.getAllProducts)
+    .get("/getProduct/:id", middleware.auth,fetchProduct.getProductById)
+    .get("/fetchProductBySeller/:sellerId",middleware.auth, fetchProduct.getProductsBySeller)
 //     .patch("/updateProduct", updateProduct.updateProduct)
-    .delete("/deleteProduct/:id", deleteProduct.deleteProduct);
+    .delete("/deleteProduct/:id",middleware.auth, deleteProduct.deleteProduct);
 
 exports.route = routes;

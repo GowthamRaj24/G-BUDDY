@@ -11,38 +11,48 @@ const RoadmapHome = () => {
     const [filteredRoadmaps, setFilteredRoadmaps] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('');
 
-    const categories = [
+    const [categories, setCategories] = useState([
         { name: 'Web Development', icon: FaCode, count: 0 },
         { name: 'Data Science', icon: FaDatabase, count: 0 },
-        { name: 'AI/ML', icon: FaRobot, count: 0 },
+        { name: 'AI_ML', icon: FaRobot, count: 0 },
         { name: 'DSA', icon: FaBookOpen, count: 0 }
-    ];
-
-    // Fetch all roadmaps
+    ]);
+    
     useEffect(() => {
         const fetchRoadmaps = async () => {
             try {
-                const response = await axios.get('http://localhost:4001/roadmaps/roadmaps');
+                const response = await axios.get('http://localhost:4001/roadmaps/roadmaps', {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('token')}`
+                    }
+              });
                 setRoadmaps(response.data.data);
                 setFilteredRoadmaps(response.data.data);
                 
                 // Update category counts
-                categories.forEach(category => {
-                    category.count = response.data.data.filter(
-                        roadmap => roadmap.category === category.name
-                    ).length;
-                });
+                const updatedCategories = categories.map(category => ({
+                    ...category,
+                    count: response.data.data.filter(roadmap => 
+                        roadmap.category === category.name
+                    ).length
+                }));
+                
+                setCategories(updatedCategories);
             } catch (error) {
                 console.error('Error fetching roadmaps:', error);
             }
         };
         fetchRoadmaps();
     }, []);
+    
 
-    // Handle category selection
     const handleCategoryClick = async (categoryName) => {
         try {
-            const response = await axios.get(`http://localhost:4001/roadmaps/roadmaps/category/${categoryName}`);
+            const response = await axios.get(`http://localhost:4001/roadmaps/roadmaps/category/${categoryName}`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+          });
             setFilteredRoadmaps(response.data.data);
             setSelectedCategory(categoryName);
         } catch (error) {
@@ -129,7 +139,7 @@ const RoadmapHome = () => {
                 </div>
 
                 {/* Featured Roadmaps */}
-                <h2 className="text-2xl font-bold text-gray-800 mb-6">Featured Roadmaps</h2>
+                <h2 className="text-2xl font-bold text-gray-800 mb-6">All Roadmaps</h2>
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {filteredRoadmaps.map((roadmap) => (
                         <div 

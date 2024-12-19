@@ -28,7 +28,11 @@ const CreateRoadmap = () => {
             const response = await axios.post('http://localhost:4001/roadmaps/createRoadmap', {
                 ...formData,
                 author: JSON.parse(localStorage.getItem('user'))._id
-            });
+            }, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+          });
             navigate(`/roadmap/${response.data.data._id}`);
         } catch (error) {
             console.error('Error creating roadmap:', error);

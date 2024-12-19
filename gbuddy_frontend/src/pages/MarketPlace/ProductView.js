@@ -21,7 +21,11 @@ const ProductView = () => {
 
     const fetchSellerDetails = async () => {
     try {
-        const response = await axios.get(`http://localhost:4001/users/fetchUser/${product.sellerId}`);
+        const response = await axios.get(`http://localhost:4001/users/fetchUser/${product.sellerId}`, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+      });
         setSeller(response.data.data);
     } catch (error) {
         console.log('Error fetching seller details:', error);
@@ -34,7 +38,11 @@ const ProductView = () => {
 
     const fetchProductDetails = async () => {
         try {
-            const response = await axios.get(`http://localhost:4001/products/getProduct/${id}`);
+            const response = await axios.get(`http://localhost:4001/products/getProduct/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+          });
             setProduct(response.data.data);
             setLoading(false);
         } catch (error) {
@@ -136,7 +144,7 @@ const ProductView = () => {
                                 onClick={() => window.location.href = `https://wa.me/+91${seller?.phone}`}
                                 className="w-full bg-emerald-500 text-white px-6 py-4 rounded-xl hover:bg-emerald-600 transition-colors shadow-lg font-medium text-lg"
                             >
-                                Buy Now
+                                Contact Seller
                             </motion.button>
                         </div>
 

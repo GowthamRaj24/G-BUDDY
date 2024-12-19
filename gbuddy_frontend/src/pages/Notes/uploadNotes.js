@@ -100,9 +100,12 @@ const UploadNotes = () => {
                 faculty : formData.faculty || '',
                 file : formData.file
             }, {headers: {
+                 Authorization: `Bearer ${localStorage.getItem('token')}`,
                 'Content-Type': 'multipart/form-data'
             }}
         )
+
+      
         .then((res) => {
             console.log(res.data);
             console.log('Form submitted:', formData);

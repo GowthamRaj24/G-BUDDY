@@ -2,3 +2,6 @@
 /gbuddy_backend/node_modules
 /gbuddy_frontend/node_modules
 /gbuddy_frontend/.env
+/gbuddy_backend/driveAPI
+/gbuddy_backend/middleware
+/gbuddy_backend/db.js

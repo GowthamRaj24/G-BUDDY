@@ -73,12 +73,12 @@ const NotesLibrary = () => {
             // }
 
             const response = await fetch('http://localhost:4001/notes/fetchAllNotes', {
-                method: 'GET',
-                // headers: {
-                //     'Authorization': `Bearer ${token}`,
-                //     'Content-Type': 'application/json'
-                // }
+                method: 'GET', 
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('token')}`
+                    }
             });
+            
 
             if (!response.ok) {
                 throw new Error('Failed to fetch notes');
@@ -134,7 +134,7 @@ const NotesLibrary = () => {
 
     const handleDeleteNote = async (noteId) => {
         try {
-            const token = localStorage.getItem('token');
+            const token = JSON.parse(localStorage.getItem('token'));
             const response = await fetch(`http://localhost:4001/notes/deleteNotes/${noteId}`, {
                 method: 'DELETE',
                 headers: {

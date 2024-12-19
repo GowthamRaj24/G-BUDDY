@@ -57,7 +57,7 @@ function App() {
         <Route path='/verify' element={<VerifyEmail/>}/>
         <Route path='/roadmaps' element={<Layout><RoadmapHome /></Layout>}/>
         <Route path='/editprofile' element={<Layout><EditProfile/></Layout>}/>
-        <Route path='/roadmaps/:id' element={<Layout><RoadmapView/></Layout>}/>
+        <Route path='/roadmap/:id' element={<Layout><RoadmapView/></Layout>}/>
         <Route path='/roadmaps/create' element={<Layout><CreateRoadmap/></Layout>}/>
       </Routes>
     </BrowserRouter>

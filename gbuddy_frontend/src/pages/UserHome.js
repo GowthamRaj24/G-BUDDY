@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom';
 import { 
     FaBook, FaShoppingCart, FaCalendarAlt, 
     FaArrowRight, FaGraduationCap, FaLightbulb,
-    FaChartLine, FaRocket, FaCheck , FaBrain  , FaShieldAlt
+    FaChartLine, FaRocket, FaCheck , FaBrain  , FaShieldAlt,
+    FaRoute
 } from 'react-icons/fa';
 import { FaReact, FaNodeJs, FaTools, FaCloud } from 'react-icons/fa';
 
@@ -149,9 +150,9 @@ const mainFeatures = [
         path: "/marketplace"
     },
     {
-        icon: <FaCalendarAlt className="w-8 h-8" />,
+        icon: <FaRoute className="w-8 h-8" />,
         title: "Roadmaps",
-        description: "Plan your study sessions, set reminders, and track your progress effectively.",
+        description: "Create and share your own learning roadmaps with the community.",
         path: "/roadmaps"
     }
 ];
@@ -195,7 +196,7 @@ const techFeatures = [
 const studyTips = [
     {
         icon: <FaLightbulb className="w-6 h-6" />,
-        text: "Create study schedules"
+        text: "Stay curious & creative"
     },
     {
         icon: <FaBook className="w-6 h-6" />,

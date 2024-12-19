@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { FaUser, FaBook, FaStore, FaBookmark, FaWallet } from 'react-icons/fa';
+import { FaUser, FaBook, FaStore, FaBookmark, FaWallet, FaRoute } from 'react-icons/fa';
 import axios from 'axios';
 import ProductCard from '../components/ProductCard';
 import NotesCard from '../components/NoteCard';
-import { FaEdit, FaLock, FaLinkedin, FaGithub, FaCode } from 'react-icons/fa';
+import { FaEdit, FaLock, FaLinkedin, FaGithub, FaCode, FaPlus , FaTrash} from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
 const ProfilePage = () => {
@@ -16,18 +16,24 @@ const ProfilePage = () => {
     const userId = JSON.parse(localStorage.getItem('user'))._id;
     const [mynotes , setMynotes] = useState([]);
     const navigate = useNavigate();
+    const [roadmaps , setRoadmaps] = useState([]);
 
     useEffect(() => {
         fetchUserData();
         fetchUserProducts();
         fetchSavedNotes();
         getNotesById();
+        fetchuserRoadmaps();
         setLoading(false);
     }, []);
 
     const getNotesById = async () => {
         try {
-            const response = await axios.get(`http://localhost:4001/notes/fetchbyUser/${userId}`);
+            const response = await axios.get(`http://localhost:4001/notes/fetchbyUser/${userId}`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+          });
             console.log("-->"+response);
             setMynotes(response.data.data);
         } catch (error) {
@@ -44,7 +50,11 @@ const ProfilePage = () => {
 
             const response = await axios.post(`http://localhost:4001/notes/getSavedNotes`, {
                  noteIds: savedNoteIds 
-            });
+            }, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+          });
             
             setNotes(response.data);
         } catch (error) {
@@ -54,7 +64,11 @@ const ProfilePage = () => {
 
     const fetchUserData = async () => {
         try {
-            const response = await axios.get(`http://localhost:4001/users/fetchUser/${userId}`);
+            const response = await axios.get(`http://localhost:4001/users/fetchUser/${userId}`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+          });
             setUserData(response.data.data);
         } catch (error) {
             console.log('Error fetching user data:', error);
@@ -63,7 +77,11 @@ const ProfilePage = () => {
 
     const fetchUserProducts = async () => {
         try {
-            const response = await axios.get('http://localhost:4001/products/fetchProductBySeller/'+userId);
+            const response = await axios.get('http://localhost:4001/products/fetchProductBySeller/'+userId, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+          });
             setUserProducts(response.data.data);
             setLoading(false);
         } catch (error) {
@@ -72,11 +90,29 @@ const ProfilePage = () => {
         }
     };
 
+    const fetchuserRoadmaps = async () => {
+        await axios.get("http://localhost:4001/roadmaps/roadmap/user/" + userId, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+      })
+        .then((res) => {
+            setRoadmaps(res.data.data);
+            setLoading(false);
+        })
+        .catch((error) => {
+            console.error('Error fetching roadmaps:', error);
+            setLoading(false);
+        })
+    }
+
+
     const tabs = [
         { id: 'profile', label: 'Profile', icon: FaUser },
         { id: 'products', label: 'My Products', icon: FaStore },
         { id: 'saved', label: 'Saved Items', icon: FaBookmark },
         { id: 'notes', label: 'My Notes', icon: FaBook },
+        { id : 'roadmaps', label: 'Roadmaps', icon: FaRoute }
     ];
 
     return (
@@ -280,8 +316,29 @@ const ProfilePage = () => {
                             ) : (
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                     {userProducts.map((product) => (
-                                        <ProductCard key={product._id} product={product} />
-                                    ))}
+    <div key={product._id} className="relative">
+        <ProductCard product={product} />
+        <button
+            onClick={async () => {
+                if (window.confirm('Are you sure you want to delete this product?')) {
+                    try {
+                        await axios.delete(`http://localhost:4001/products/deleteProduct/${product._id}`, {
+                            headers: {
+                                Authorization: `Bearer ${localStorage.getItem('token')}`
+                            }
+                      });
+                        fetchUserProducts(); // Refresh the list
+                    } catch (error) {
+                        console.error('Error deleting product:', error);
+                    }
+                }
+            }}
+            className="absolute top-2 right-2 text-red-500 hover:text-red-600 bg-white rounded-full p-2 shadow-md"
+        >
+            <FaTrash className="w-4 h-4" />
+        </button>
+    </div>
+))}
                                 </div>
                             )}
                         </motion.div>
@@ -320,12 +377,112 @@ const ProfilePage = () => {
                         ) : (
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 {mynotes.map((note) => (
-                                    <NotesCard key={note._id} note={note} />
-                                ))}
+    <div key={note._id} className="relative">
+        <NotesCard note={note} />
+        <button
+            onClick={async () => {
+                if (window.confirm('Are you sure you want to delete this note?')) {
+                    try {
+                        console.log(note)
+                        await axios.delete(`http://localhost:4001/notes/deleteNote/${note._id}`, {
+                            headers: {
+                                Authorization: `Bearer ${localStorage.getItem('token')}`
+                            }
+                      });
+                        getNotesById(); // Refresh the list
+                    } catch (error) {
+                        console.error('Error deleting note:', error);
+                    }
+                }
+            }}
+            className="absolute top-2 right-2 text-red-500 hover:text-red-600 bg-white rounded-full p-2 shadow-md"
+        >
+            <FaTrash className="w-4 h-4" />
+        </button>
+    </div>
+))}
+
                             </div>
                         )}
                     </motion.div>
                     )}
+
+{activeTab === 'roadmaps' && (
+    <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+    >
+        <div className="flex justify-between items-center mb-6">
+            <h2 className="text-2xl font-bold">My Roadmaps</h2>
+            <button
+                onClick={() => navigate('/roadmaps/create')}
+                className="px-6 py-2 bg-emerald-500 text-white rounded-xl hover:bg-emerald-600 transition-colors flex items-center gap-2"
+            >
+                <FaPlus className="w-4 h-4" />
+                Create Roadmap
+            </button>
+        </div>
+        
+        {loading ? (
+            <div className="flex justify-center py-12">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500"></div>
+            </div>
+        ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {roadmaps.map((roadmap) => (
+                    <div
+                        key={roadmap._id}
+                        className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow p-6"
+                    >
+                        <div className="flex justify-between items-start mb-4">
+                            <h3 className="text-xl font-semibold text-gray-800">{roadmap.title}</h3>
+                            <div className="flex gap-2">
+                                <span className="px-3 py-1 bg-emerald-100 text-emerald-600 rounded-full text-sm">
+                                    {roadmap.category}
+                                </span>
+                                <button
+                                    onClick={async () => {
+                                        if (window.confirm('Are you sure you want to delete this roadmap?')) {
+                                            try {
+                                                await axios.delete(`http://localhost:4001/roadmaps/roadmap/${roadmap._id}`, {
+                                                    headers: {
+                                                        Authorization: `Bearer ${localStorage.getItem('token')}`
+                                                    }
+                                              });
+                                                fetchuserRoadmaps();
+                                            } catch (error) {
+                                                console.error('Error deleting roadmap:', error);
+                                            }
+                                        }
+                                    }}
+                                    className="text-red-500 hover:text-red-600 p-2 rounded-lg hover:bg-red-50 transition-colors"
+                                >
+                                    <FaTrash className="w-4 h-4" />
+                                </button>
+                            </div>
+                        </div>
+                        <p className="text-gray-600 mb-4 line-clamp-2">{roadmap.description}</p>
+                        <div className="flex justify-between items-center">
+                            <span className="text-sm text-gray-500">
+                                {roadmap.topics?.length} Topics
+                            </span>
+                            <button
+                                onClick={() => navigate(`/roadmap/${roadmap._id}`)}
+                                className="text-emerald-600 hover:text-emerald-700 font-medium"
+                            >
+                                View Details →
+                            </button>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        )}
+    </motion.div>
+)}
+
+
+
+                    
                 </div>
             </div>
         </div>

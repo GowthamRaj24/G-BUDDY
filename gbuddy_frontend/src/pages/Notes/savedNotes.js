@@ -28,7 +28,11 @@ const SavedNotes = () => {
 
                 const response = await axios.post(`http://localhost:4001/notes/getSavedNotes`, {
                      noteIds: savedNoteIds 
-                });
+                }, {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('token')}`
+                    }
+              });
                 
                 setNotes(response.data);
             } catch (error) {

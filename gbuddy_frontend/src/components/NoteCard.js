@@ -43,6 +43,10 @@ const NotesCard = ({ note }) => {
           const response = await axios.post(`http://localhost:4001/notes/saveNote`, {
               noteId: note._id,
               userId: user._id
+          } , {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
           });
           
           // Toggle saved state

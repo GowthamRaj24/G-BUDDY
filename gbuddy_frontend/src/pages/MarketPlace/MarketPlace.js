@@ -69,7 +69,11 @@ const Marketplace = () => {
 
     const handleQuickView = async (productId) => {
         try {
-            const response = await axios.get(`http://localhost:4001/products/getProduct/${productId}`);
+            const response = await axios.get(`http://localhost:4001/products/getProduct/${productId}`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+          });
             console.log('Product details:', response.data.data);
         } catch (error) {
             console.error('Error fetching product details:', error);
