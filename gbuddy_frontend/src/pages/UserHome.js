@@ -4,8 +4,10 @@ import { Link } from 'react-router-dom';
 import { 
     FaBook, FaShoppingCart, FaCalendarAlt, 
     FaArrowRight, FaGraduationCap, FaLightbulb,
-    FaChartLine, FaRocket, FaCheck , FaBrain , FaCloud , FaShieldAlt
+    FaChartLine, FaRocket, FaCheck , FaBrain  , FaShieldAlt
 } from 'react-icons/fa';
+import { FaReact, FaNodeJs, FaTools, FaCloud } from 'react-icons/fa';
+
 import Header from '../components/Header';
 
 const UserHome = () => {
@@ -15,10 +17,8 @@ const UserHome = () => {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50">
-            <Header />
 
-            {/* Hero Section */}
-            <section className="pt-24 pb-12 px-6 mt-8">
+            <section className="pt-12 pb-12 px-6">
                 <div className="max-w-7xl mx-auto">
                     <motion.div 
                         initial={{ opacity: 0, y: 20 }}
@@ -150,68 +150,44 @@ const mainFeatures = [
     },
     {
         icon: <FaCalendarAlt className="w-8 h-8" />,
-        title: "Study Scheduler",
+        title: "Roadmaps",
         description: "Plan your study sessions, set reminders, and track your progress effectively.",
-        path: "/schedule"
+        path: "/roadmaps"
     }
 ];
-
-const stats = [
-    {
-        icon: <FaGraduationCap className="w-6 h-6" />,
-        value: "15K+",
-        label: "Active Students"
-    },
-    {
-        icon: <FaBook className="w-6 h-6" />,
-        value: "25K+",
-        label: "Study Materials"
-    },
-    {
-        icon: <FaShoppingCart className="w-6 h-6" />,
-        value: "5K+",
-        label: "Resources Shared"
-    },
-    {
-        icon: <FaChartLine className="w-6 h-6" />,
-        value: "92%",
-        label: "Success Rate"
-    }
-];
-
 
 const techFeatures = [
     {
-        icon: <FaBrain className="w-6 h-6 text-white" />,
-        title: "AI-Powered Learning",
-        description: "Advanced artificial intelligence to enhance your learning experience",
+        icon: <FaReact className="w-6 h-6 text-white" />,
+        title: "Modern Frontend",
+        description: "Built with cutting-edge web technologies",
         benefits: [
-            "Personalized study recommendations",
-            "Smart content organization",
-            "Automated study patterns analysis",
-            "Intelligent doubt resolution"
+            "React.js for dynamic UI",
+            "Tailwind CSS for styling",
+            "Framer Motion animations",
+            "Responsive design"
         ]
     },
     {
-        icon: <FaCloud className="w-6 h-6 text-white" />,
-        title: "Cloud Infrastructure",
-        description: "Secure and scalable AWS cloud infrastructure",
+        icon: <FaNodeJs className="w-6 h-6 text-white" />,
+        title: "Robust Backend",
+        description: "Powered by reliable server technologies",
         benefits: [
-            "AWS S3 for resource storage",
-            "Fast content delivery",
-            "Automatic backups",
-            "Unlimited storage capacity"
+            "Node.js & Express.js",
+            "MongoDB database",
+            "RESTful API architecture",
+            "JWT authentication"
         ]
     },
     {
-        icon: <FaShieldAlt className="w-6 h-6 text-white" />,
-        title: "Enhanced Security",
-        description: "Multi-layer security protocols for your data protection",
+        icon: <FaTools className="w-6 h-6 text-white" />,
+        title: "Development Tools",
+        description: "Industry-standard development workflow",
         benefits: [
-            "Two-factor authentication",
-            "End-to-end encryption",
-            "Regular security audits",
-            "GDPR compliance"
+            "Git version control",
+            "GitHub collaboration",
+            "VS Code IDE",
+            "Postman API testing"
         ]
     }
 ];
@@ -227,7 +203,7 @@ const studyTips = [
     },
     {
         icon: <FaRocket className="w-6 h-6" />,
-        text: "Track your progress"
+        text: "Stay motivated"
     },
     {
         icon: <FaGraduationCap className="w-6 h-6" />,

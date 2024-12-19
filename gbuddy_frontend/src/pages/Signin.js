@@ -2,13 +2,45 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { FaGraduationCap, FaGoogle, FaGithub } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
 
 const SignIn = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error , setError] = useState('');
+    const [loading , setLoading] = useState(false);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        console.log(email, password);
+        setLoading(true);
+        await axios.post("http://localhost:4001/auth/signin" , {email : email , password : password})
+        .then((res) => {
+            console.log(res);
+            localStorage.setItem('token', res.data.token);
+            localStorage.setItem('user', JSON.stringify(res.data.data));
+            window.location.href = "/home";
+        })
+        .catch((err) => {
+            console.log(err);
+            setLoading(false);
+            setError(err.response.data.message);
+            toast.error(err.response.data.message, {
+                position: "top-right",
+                autoClose: 3500,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+              });
+        });
+    }
 
     return (
         <>
+        <ToastContainer />
         <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 flex items-center justify-center px-6">
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -34,7 +66,7 @@ const SignIn = () => {
                     transition={{ delay: 0.1 }}
                     className="bg-white p-8 rounded-2xl shadow-xl"
                 >
-                    <form className="space-y-6">
+                    <form className="space-y-6" onSubmit={handleSubmit}>
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-2">
                                 Email Address
@@ -63,25 +95,21 @@ const SignIn = () => {
 
                         <div className="flex items-center justify-between">
                             <div className="flex items-center">
-                                <input
-                                    type="checkbox"
-                                    className="h-4 w-4 text-emerald-600 focus:ring-emerald-500 border-gray-300 rounded"
-                                />
-                                <label className="ml-2 text-sm text-gray-600">
-                                    Remember me
-                                </label>
+
                             </div>
-                            <a href="#" className="text-sm text-emerald-600 hover:text-emerald-700">
+                            <a href="/forgotpassword" className="text-sm text-emerald-600 hover:text-emerald-700">
                                 Forgot password?
                             </a>
                         </div>
 
                         <button
-                            type="submit"
-                            className="w-full py-3 px-4 rounded-lg bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-medium hover:shadow-lg hover:shadow-emerald-200 transition-all"
-                        >
-                            Sign In
-                        </button>
+                                type="submit"
+                                disabled={loading}
+                                className="w-full py-3 px-4 rounded-lg bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-medium hover:shadow-lg hover:shadow-emerald-200 transition-all disabled:opacity-50"
+                                
+                            >
+                                {loading ? 'Signing In...' : 'Sign In'}
+                            </button>
                     </form>
 
                     <div className="mt-6">

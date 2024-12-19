@@ -1,35 +1,40 @@
-// const Notes = require('../../models/notesSchema');
-// const AWS = require('aws-sdk');
+const Notes = require('../../models/notes/notesSchema');
+const driveService = require('../../driveAPI/googleDrive');
 
-// const s3 = new AWS.S3({
-//     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-//     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-//     region: process.env.AWS_REGION
-// });
-
-// const deleteNotes = async (req, res) => {
-//     try {
-//         const note = await Notes.findById(req.params.id);
+const deleteNote = async (req, res) => {
+    try {
+        const note = await Notes.findById(req.params.id);
         
-//         const key = note.documentUrl.split('.com/')[1];
-//         await s3.deleteObject({
-//             Bucket: process.env.AWS_BUCKET_NAME,
-//             Key: key
-//         }).promise();
+        if (!note) {
+            return res.status(404).json({
+                success: false,
+                message: "Note not found"
+            });
+        }
 
-//         await Notes.findByIdAndDelete(req.params.id);
+        // Extract file ID from Google Drive URL
+        const fileId = note.documentUrl.split('/')[5];
 
-//         res.status(200).json({
-//             success: true,
-//             message: "Notes deleted successfully"
-//         });
-//     } catch (error) {
-//         res.status(500).json({
-//             success: false,
-//             message: "Failed to delete notes",
-//             error: error.message
-//         });
-//     }
-// };
+        // Delete file from Google Drive
+        await driveService.files.delete({
+            fileId: fileId
+        });
 
-// exports.deleteNotes = deleteNotes;
+        // Delete note from database
+        await Notes.findByIdAndDelete(req.params.id);
+
+        res.status(200).json({
+            success: true,
+            message: "Note deleted successfully"
+        });
+
+    } catch (error) {
+        res.status(400).json({
+            success: false,
+            message: "Failed to delete note",
+            error: error.message
+        });
+    }
+};
+
+exports.deleteNote = deleteNote;

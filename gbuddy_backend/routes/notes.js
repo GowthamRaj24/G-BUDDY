@@ -1,26 +1,31 @@
-// const express = require("express");
-// const multer = require('multer');
-// const upload = multer({ dest: 'uploads/' ,
-//     limits: {
-//         fileSize: 5 * 1024 * 1024 // 5MB limit
-//     }});
-
-// const addNotes = require("../controllers/notes/addNote");
-// const fetchNotes = require("../controllers/notes/fetchNote.js");
-// const updateNotes = require("../controllers/notes/updateNote.js");
-// const deleteNotes = require("../controllers/notes/deleteNote.js");
-// const middleware = require("../middleware/auth")
-
-// const routes = express.Router();
-
-// routes
-//     .post("/addNotes",middleware.auth, upload.single('file'), addNotes.addNotes)
-//     .get("/searchNotes",middleware.auth, fetchNotes.searchNotes)
-//     .get("/fetchNotes",middleware.auth, fetchNotes.getNotes)
-//     .get("/fetchNotes/:id",middleware.auth, fetchNotes.getNoteById)
-//     .get("/fetchNotesByUser/:userId",middleware.auth, fetchNotes.getNotesByUser)
-//     .patch("/updateNotes", middleware.auth,updateNotes.updateNotes)
-//     .delete("/deleteNotes/:id",middleware.auth, deleteNotes.deleteNotes);
+const express = require("express");
+const multer = require('multer');
+const upload = multer({ 
+    dest: 'uploads/',
+    limits: {
+        fileSize: 5 * 1024 * 1024 // 5MB limit
+    }
+});
 
 
-// exports.route = routes;
+const addNotes = require("../controllers/notes/addNote");
+const fetchNotes = require("../controllers/notes/fetchNote.js");
+const contributeVideo = require("../controllers/notes/contributeVideo.js");
+
+const middleware = require("../middleware/auth");
+
+const routes = express.Router();
+
+routes
+    .post("/addNotes", upload.single("file"), addNotes.addNotes)
+    .get("/searchNotes",middleware.auth, fetchNotes.getAllNotes)
+    .get("/fetchAllNotes", fetchNotes.getAllNotes)
+    .get("/:noteId", fetchNotes.getNoteById)
+    .get("/fetchbyUser/:userId", fetchNotes.getNotesByUser)
+    .post("/getSavedNotes" , fetchNotes.getSavedNotes)
+    .post("/saveNote", addNotes.saveNote)
+    .post("/contributeVideo", contributeVideo.contributeVideo)
+    .post("/getLatestNotes", fetchNotes.getLatestNotes)
+    .post("/searchNotes", fetchNotes.searchNotes);
+    
+exports.route = routes;

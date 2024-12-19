@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { FaCloudUploadAlt, FaFile, FaCheck, FaTimes } from 'react-icons/fa';
+import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
 
 const steps = [
     { id: 1, title: 'Upload File' },
@@ -8,15 +10,16 @@ const steps = [
     { id: 3, title: 'Preview & Submit' }
 ];
 
+
 const UploadNotes = () => {
     const [currentStep, setCurrentStep] = useState(1);
     const [formData, setFormData] = useState({
         title: '',
         description: '',
         subject: '',
-        semester: '',
+        sem: '',
         unit: '',
-        faculty: '',
+        faculty: 'DSA',
         file: null
     });
     const [dragActive, setDragActive] = useState(false);
@@ -31,6 +34,8 @@ const UploadNotes = () => {
         }
     };
 
+    const [loading, setLoading] = useState(false);
+
     const handleDrop = (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -44,6 +49,7 @@ const UploadNotes = () => {
 
     const handleFileInput = (e) => {
         const file = e.target.files[0];
+        console.log("Added file " + file)
         if (file && file.type === 'application/pdf') {
             setFormData(prev => ({ ...prev, file }));
             setCurrentStep(2);
@@ -51,13 +57,74 @@ const UploadNotes = () => {
     };
 
     const handleSubmit = async (e) => {
+        setLoading(true);
+        console.log(formData);
+
+        if (!formData.file) {
+            setLoading(false);
+            return toast.error('Please upload a file', {
+                position: "top-right",
+                autoClose: 3500,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+        }
+
+        if (!formData.title || !formData.subject || !formData.sem || !formData.unit || !formData.description) {
+            setLoading(false);
+            return toast.error('Please fill all the fields', {
+                position: "top-right",
+                autoClose: 3500,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+        }
+
+
         e.preventDefault();
-        // Handle form submission
-        console.log('Form submitted:', formData);
+        await axios.post("http://localhost:4001/notes/addNotes", 
+            {
+                title: formData.title,
+                sem : formData.sem,
+                userId: JSON.parse(localStorage.getItem('user'))._id,
+                subject : formData.subject,
+                unit : formData.unit,
+                format : formData.file.type,
+                description : formData.description,
+                faculty : formData.faculty || '',
+                file : formData.file
+            }, {headers: {
+                'Content-Type': 'multipart/form-data'
+            }}
+        )
+        .then((res) => {
+            console.log(res.data);
+            console.log('Form submitted:', formData);
+            window.location.href = "/notes";
+        })
+        .catch((err) => {
+            setLoading(false);
+            toast.error("File might be too Large to Upload", {
+                position: "top-right",
+                autoClose: 3500,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+        });
     };
 
     return (
         <div className="min-h-screen bg-gray-50 py-12">
+            <ToastContainer />
             <div className="max-w-4xl mx-auto px-6">
                 {/* Progress Steps */}
                 <div className="mb-8">
@@ -167,10 +234,10 @@ const UploadNotes = () => {
                                     Semester
                                 </label>
                                 <select
-                                    value={formData.semester}
+                                    value={formData.sem}
                                     onChange={(e) => setFormData(prev => ({
                                         ...prev,
-                                        semester: e.target.value
+                                        sem: e.target.value
                                     }))}
                                     className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-emerald-500"
                                     required
@@ -265,7 +332,7 @@ const UploadNotes = () => {
                                 </div>
                                 <div>
                                     <p className="text-sm text-gray-500">Semester</p>
-                                    <p className="font-medium">{formData.semester}</p>
+                                    <p className="font-medium">{formData.sem}</p>
                                 </div>
                                 <div>
                                     <p className="text-sm text-gray-500">Unit</p>
@@ -286,11 +353,15 @@ const UploadNotes = () => {
                                 Back
                             </button>
                             <button
+                                type="submit"
+                                disabled={loading}
                                 onClick={handleSubmit}
-                                className="px-6 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors"
+                                className="w-full py-3 px-4 rounded-lg bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-medium hover:shadow-lg hover:shadow-emerald-200 transition-all disabled:opacity-50"
+                                
                             >
-                                Submit
+                                {loading ? 'Uploading...' : 'Submit'}
                             </button>
+ 
                         </div>
                     </motion.div>
                 )}

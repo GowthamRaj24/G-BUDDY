@@ -9,7 +9,7 @@ const signin = async (req, res) => {
         if (!user) {
             return res.status(401).json({
                 success: false,
-                message: "Invalid credentials"
+                message: "User not found"
             });
         }
 
@@ -17,17 +17,16 @@ const signin = async (req, res) => {
         if (!isPasswordValid) {
             return res.status(401).json({
                 success: false,
-                message: "Invalid credentials"
+                message: "Password Incorrect"
             });
         }
         const token = jwt.sign(
             { userId: user._id },
-            process.env.JWT_SECRET,
-            { expiresIn: '24h' }
+            "JWT_SECRET"
         );
 
         const { password: userPassword, ...userWithoutPassword } = user.toObject();
-
+        
         res.status(200).json({
             success: true,
             data: userWithoutPassword,

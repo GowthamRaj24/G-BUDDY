@@ -39,17 +39,24 @@ const signup = async (req, res) => {
             phone: req.body.phone
         });
         
-        const token = jwt.sign({ userId: user._id },10);
-        console.log(token);
-        const { password, ...userWithoutPassword } = user.toObject();
-        console.log(userWithoutPassword);
+        console.log("Created User: ", user._id);
+        try{
+            const token = jwt.sign({ userId: user._id } , "JWT_SECRET", { expiresIn: '24h' });
+            console.log(token);
+            const { password, ...userWithoutPassword } = user.toObject();
+            console.log(userWithoutPassword);
 
-        res.status(201).json({
-            success: true,
-            data: userWithoutPassword,
-            token: token,
-            message: "Registration successful"
-        });
+            res.status(201).json({
+                success: true,
+                userdata: userWithoutPassword,
+                token: token,
+                message: "Registration successful"
+            });
+        }
+        catch(err){
+            console.log(err);
+        }
+    
 
     } catch (error) {
         res.status(400).json({

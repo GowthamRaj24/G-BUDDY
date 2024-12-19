@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { FaHeart, FaRegHeart, FaShoppingCart, FaClock, FaCheck, FaEye } from 'react-icons/fa';
 import { formatDistanceToNow } from 'date-fns';
+import { useNavigate } from 'react-router-dom';
 
 const ProductCard = ({ 
     product, 
@@ -10,6 +11,7 @@ const ProductCard = ({
     onQuickView, 
     isWishlisted = false 
 }) => {
+    const navigate = useNavigate();
     const {
         title,
         images,
@@ -28,7 +30,6 @@ const ProductCard = ({
 
     const onBuyNow = (product) => {
         if (status === 'available') {
-            window.location.href = `/marketplace/product/`
             console.log('Buying product:', product);
         }
     };
@@ -38,20 +39,23 @@ const ProductCard = ({
         <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
+            onClick={() => navigate(`/marketplace/${product._id}`)}
             className="group relative bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300"
         >
             {/* Image Container */}
             <div className="relative overflow-hidden rounded-t-2xl aspect-[4/3]">
-                <img
-                    src={images[0]}
-                    alt={title}
-                    className="object-cover w-full h-full transform group-hover:scale-110 transition-transform duration-500"
-                />
-                
+            <img
+    src={`https://lh3.googleusercontent.com/d/${product.images[0].split('id=')[1]}`}
+    alt={product.title}
+    className="object-cover w-full h-full transform group-hover:scale-110 transition-transform duration-500"
+/>
+
+
+
                 {/* Overlay on Hover */}
                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <div className="absolute top-4 right-4 flex flex-col gap-2">
-                        <motion.button
+                        {/* <motion.button
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.9 }}
                             onClick={() => onToggleWishlist(product)}
@@ -62,15 +66,15 @@ const ProductCard = ({
                             ) : (
                                 <FaRegHeart className="w-5 h-5 text-gray-700" />
                             )}
-                        </motion.button>
-                        <motion.button
+                        </motion.button> */}
+                        {/* <motion.button
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.9 }}
                             onClick={() => onQuickView(product)}
                             className="p-3 bg-white/90 backdrop-blur-sm rounded-full shadow-lg hover:bg-white transition-colors"
                         >
                             <FaEye className="w-5 h-5 text-gray-700" />
-                        </motion.button>
+                        </motion.button> */}
                     </div>
                 </div>
 

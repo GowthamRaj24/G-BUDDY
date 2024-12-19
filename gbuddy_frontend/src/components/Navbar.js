@@ -25,12 +25,7 @@ const Navbar = () => {
                             G-BUDDY
                         </span>
                     </Link>
-                    <div className="hidden md:flex items-center gap-8">
-                        <NavLink to="/features">Features</NavLink>
-                        <NavLink to="/resources">Resources</NavLink>
-                        <NavLink to="/marketplace">Marketplace</NavLink>
-                        <NavLink to="/about">About</NavLink>
-                    </div>
+             
                     <div className="flex items-center gap-4">
                         <Link to="/signin" className="px-6 py-2.5 rounded-full text-emerald-600 hover:text-emerald-700 font-medium transition-all">
                             Login

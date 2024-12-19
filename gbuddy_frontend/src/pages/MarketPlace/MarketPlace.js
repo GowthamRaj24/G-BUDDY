@@ -1,38 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { FaSearch, FaSlidersH, FaShoppingCart, FaHeart, FaFilter } from 'react-icons/fa';
+import { FaSearch, FaSlidersH } from 'react-icons/fa';
 import ProductCard from '../../components/ProductCard';
-
-// Enhanced dummy data with better image placeholders
-const dummyProducts = [
-    {
-        _id: '1',
-        title: 'Data Structures and Algorithms Handbook',
-        images: ['https://via.placeholder.com/800x600/2563eb/ffffff?text=DSA+Handbook'],
-        description: 'Master competitive programming with this comprehensive guide covering all essential algorithms and data structures.',
-        price: 299,
-        sellerId: 'seller123',
-        category: 'Books',
-        status: 'available',
-        rating: 4.5,
-        reviews: 128,
-        createdAt: new Date(),
-        updatedAt: new Date()
-    },
-].concat(Array(11).fill(null).map((_, i) => ({
-    _id: `${i + 2}`,
-    title: `${['Advanced Calculus Notes', 'Computer Networks Guide', 'Machine Learning Basics', 'Web Development Course'][Math.floor(Math.random() * 4)]} ${i + 2}`,
-    images: [`https://via.placeholder.com/800x600/${Math.random().toString(16).substr(-6)}/ffffff`],
-    description: 'Comprehensive study material with detailed explanations and practice problems.',
-    price: Math.floor(Math.random() * 1000) + 100,
-    sellerId: `seller${i}`,
-    category: ['Books', 'Notes', 'Study Materials', 'Electronics'][Math.floor(Math.random() * 4)],
-    status: ['available', 'sold', 'reserved'][Math.floor(Math.random() * 3)],
-    rating: (Math.random() * 2 + 3).toFixed(1),
-    reviews: Math.floor(Math.random() * 200),
-    createdAt: new Date(Date.now() - Math.random() * 10000000000),
-    updatedAt: new Date()
-})));
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const categories = [
     { id: 'all', name: 'All', icon: '📚', color: 'emerald' },
@@ -44,18 +15,40 @@ const categories = [
 ];
 
 const Marketplace = () => {
+    const navigate = useNavigate();
+    const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
     const [selectedCategory, setSelectedCategory] = useState('all');
     const [searchQuery, setSearchQuery] = useState('');
     const [sortBy, setSortBy] = useState('newest');
     const [showFilters, setShowFilters] = useState(false);
     const [priceRange, setPriceRange] = useState([0, 2000]);
-    const productsPerPage = 6; // Changed to 6 for better grid layout
+    const productsPerPage = 6;
 
-    // Filter and sort products
-    const filteredProducts = dummyProducts
+    useEffect(() => {
+        fetchProducts();
+    }, [selectedCategory]);
+
+    const fetchProducts = async () => {
+        try {
+            setLoading(true);
+            let url = 'http://localhost:4001/products/fetchProduct';
+            console.log("url:", url);
+            if (selectedCategory !== 'all') {
+                url = `http://localhost:4001/products/getProductsByCategory/${selectedCategory}`;
+            }
+            const response = await axios.get(url);
+            setProducts(response.data.data);
+            setLoading(false);
+        } catch (error) {
+            console.error('Error fetching products:', error);
+            setLoading(false);
+        }
+    };
+
+    const filteredProducts = products
         .filter(product => 
-            (selectedCategory === 'all' || product.category.toLowerCase() === selectedCategory) &&
             product.title.toLowerCase().includes(searchQuery.toLowerCase()) &&
             product.price >= priceRange[0] && product.price <= priceRange[1]
         )
@@ -74,14 +67,17 @@ const Marketplace = () => {
         currentPage * productsPerPage
     );
 
-    const handleQuickView = (product) => {
-        // Implement quick view functionality
-        console.log('Quick view:', product);
+    const handleQuickView = async (productId) => {
+        try {
+            const response = await axios.get(`http://localhost:4001/products/getProduct/${productId}`);
+            console.log('Product details:', response.data.data);
+        } catch (error) {
+            console.error('Error fetching product details:', error);
+        }
     };
 
     return (
         <div className="min-h-screen bg-gray-100">
-            {/* Hero Section with Glassmorphism */}
             <div className="relative bg-gradient-to-r from-emerald-600 to-teal-600 text-white overflow-hidden">
                 <div className="absolute inset-0 bg-grid-white/[0.2] bg-[size:20px_20px]"></div>
                 <div className="relative max-w-7xl mx-auto px-4 py-16">
@@ -95,7 +91,6 @@ const Marketplace = () => {
                             Discover and share educational resources with your fellow students
                         </p>
                         
-                        {/* Enhanced Search Bar */}
                         <div className="max-w-2xl mx-auto">
                             <div className="relative flex items-center">
                                 <input
@@ -107,27 +102,28 @@ const Marketplace = () => {
                                 />
                                 <FaSearch className="absolute left-4 text-gray-400 text-xl" />
                                 <button 
-                                    onClick={() => setShowFilters(!showFilters)}
-                                    className="ml-4 p-4 bg-white text-emerald-600 rounded-2xl hover:bg-emerald-50 transition-colors shadow-lg"
-                                >
-                                    <FaSlidersH className="text-xl" />
-                                </button>
+    onClick={() => navigate('/marketplace/addproduct')}
+    className="ml-4 px-6 py-4 bg-white text-emerald-600 rounded-2xl hover:bg-emerald-50 transition-colors shadow-lg flex items-center gap-2 font-medium"
+>
+    <span>Add</span>
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+        <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
+    </svg>
+</button>
+
                             </div>
                         </div>
                     </motion.div>
                 </div>
             </div>
 
-            {/* Main Content */}
             <div className="max-w-7xl mx-auto px-4 py-12">
                 <div className="flex flex-col lg:flex-row gap-8">
-                    {/* Enhanced Filters Sidebar */}
                     <motion.div 
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         className={`lg:w-72 space-y-6 ${showFilters ? 'block' : 'hidden lg:block'}`}
                     >
-                        {/* Categories */}
                         <div className="bg-white rounded-2xl p-6 shadow-lg">
                             <h3 className="text-lg font-bold mb-6">Categories</h3>
                             <div className="space-y-3">
@@ -148,7 +144,6 @@ const Marketplace = () => {
                             </div>
                         </div>
 
-                        {/* Enhanced Price Range */}
                         <div className="bg-white rounded-2xl p-6 shadow-lg">
                             <h3 className="text-lg font-bold mb-6">Price Range</h3>
                             <div className="space-y-6">
@@ -168,9 +163,7 @@ const Marketplace = () => {
                         </div>
                     </motion.div>
 
-                    {/* Products Section */}
                     <div className="flex-1">
-                        {/* Sort Controls */}
                         <div className="flex flex-wrap justify-between items-center mb-8 bg-white p-4 rounded-2xl shadow-lg">
                             <p className="text-gray-600">
                                 Showing <span className="font-medium">{currentProducts.length}</span> of{' '}
@@ -190,18 +183,21 @@ const Marketplace = () => {
                             </div>
                         </div>
 
-                        {/* Products Grid */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-                            {currentProducts.map((product) => (
-                                <ProductCard
-                                    key={product._id}
-                                    product={product}
-                                    onAddToCart={() => console.log('Added to cart:', product)}
-                                    onToggleWishlist={() => console.log('Toggled wishlist:', product)}
-                                    onQuickView={handleQuickView}
-                                />
-                            ))}
-                        </div>
+                        {loading ? (
+                            <div className="flex justify-center items-center h-64">
+                                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500"></div>
+                            </div>
+                        ) : (
+                            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+                                {currentProducts.map((product) => (
+                                    <ProductCard
+                                        key={product._id}
+                                        product={product}
+                                        onQuickView={() => handleQuickView(product._id)}
+                                    />
+                                ))}
+                            </div>
+                        )}
 
                         {totalPages > 1 && (
                             <motion.div 

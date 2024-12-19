@@ -1,12 +1,35 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import image from "./developer-avatar.jpg";
 import { 
-    FaGraduationCap, FaBook, FaUsers, 
-    FaRocket, FaChalkboardTeacher, FaLaptopCode , FaGithub , FaLinkedin
+    FaPython, FaJava, FaHtml5, FaCss3, FaServer, 
+    FaLightbulb, FaUsers, FaCode ,FaStore , FaCalendarAlt
+} from 'react-icons/fa';
+import { 
+    SiTypescript, SiC, SiMysql, SiPostgresql, 
+     SiCloudflare, SiPostman
+} from 'react-icons/si';
+
+import { 
+    FaGraduationCap, FaBook,  
+    FaRocket, FaChalkboardTeacher, FaLaptopCode, 
+    FaBriefcase, FaSearch, FaCloudUploadAlt, FaTrophy
 } from 'react-icons/fa';
 import  Navbar  from '../components/Navbar';
-// import  Footer  from '../components/Footer';
+import { 
+    FaGithub, 
+    FaLinkedin, 
+    FaEnvelope, 
+    FaReact, 
+    FaJs, 
+    FaNodeJs, 
+    FaGit, 
+    FaDocker, 
+} from 'react-icons/fa';
+import { SiTailwindcss, SiExpress, SiMongodb } from 'react-icons/si';
+import "./main.css"
+
 import { PrimaryButton, SecondaryButton } from '../components/Button';
 import { FeatureCard } from '../components/Card';
 
@@ -77,13 +100,13 @@ const Dashboard = () => {
                         viewport={{ once: true }}
                     >
                         <h2 className="text-4xl font-bold mb-6 text-white">
-                            Ready to Transform Your Academic Journey?
+                            Ready to Excel Your Academic Journey?
                         </h2>
                         <p className="text-xl mb-8 text-emerald-50">
                             Join G-BUDDY today and experience the difference
                         </p>
                         <Link to="/">
-                            <PrimaryButton className="">
+                            <PrimaryButton className="" onClick={()=> window.location.href="/signin"}>   
                                 Get Started Free
                             </PrimaryButton>
                         </Link>
@@ -92,43 +115,180 @@ const Dashboard = () => {
             </section>
 
 
-<section className="py-16 px-6 bg-white/80 backdrop-blur-sm">
-    <div className="max-w-4xl mx-auto text-center">
+            <section className="py-24 px-6 bg-gradient-to-br from-gray-50 via-white to-emerald-50">
+    <div className="max-w-5xl mx-auto">
         <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl p-8 shadow-xl"
+            className="relative"
         >
-            <div className="mb-6">
-                <img 
-                    src="/developer-avatar.jpg" 
-                    alt="Developer" 
-                    className="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-emerald-400"
-                />
-                <h3 className="text-2xl font-bold text-gray-800">Gowtham Raj</h3>
-                <p className="text-emerald-600">Full Stack Developer</p>
+            {/* Background Decorations */}
+            <div className="absolute -top-10 -right-10 w-72 h-72 bg-emerald-200 rounded-full mix-blend-multiply filter blur-2xl opacity-20 animate-blob"></div>
+            <div className="absolute -bottom-10 -left-10 w-72 h-72 bg-blue-200 rounded-full mix-blend-multiply filter blur-2xl opacity-20 animate-blob animation-delay-2000"></div>
+            
+            {/* Main Content Card */}
+            <div className="relative bg-white/90 backdrop-blur-lg rounded-3xl p-8 md:p-12 shadow-2xl border border-gray-100">
+                <div className="flex flex-col lg:flex-row gap-12">
+                    {/* Left Column - Profile Info */}
+                    <div className="lg:w-1/3 flex flex-col items-center lg:items-start">
+                        <motion.div 
+                            whileHover={{ scale: 1.05 }}
+                            className="relative mb-6"
+                        >
+                            <div className="absolute inset-0 bg-gradient-to-r from-emerald-400 to-blue-400 rounded-full animate-pulse"></div>
+                            <img 
+                                src={image}
+                                alt="Gowtham Raj" 
+                                className="w-40 h-40 rounded-full relative border-4 border-white shadow-xl object-cover"
+                            />
+                        </motion.div>
+
+                        <h3 className="text-3xl font-bold bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent mb-3">
+                            Gowtham Raj
+                        </h3>
+
+                        <div className="flex flex-wrap justify-center lg:justify-start gap-2 mb-6">
+                            <span className="px-4 py-1.5 bg-emerald-100 text-emerald-700 rounded-full text-sm font-medium">
+                                Full Stack Developer
+                            </span>
+                            <span className="px-4 py-1.5 bg-blue-100 text-blue-700 rounded-full text-sm font-medium">
+                                AI Enthusiast
+                            </span>
+                        </div>
+
+                        <p className="text-gray-600 text-center lg:text-left mb-6">
+                        Open to full-time roles and freelance collaborations. Let’s connect and explore how I can add value to your team or project!
+                        </p>
+
+                        <div className="flex gap-4 mb-8">
+                            <motion.a 
+                                whileHover={{ y: -2 }}
+                                href="https://github.com/GowthamRaj24"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="p-3 bg-gray-900 text-white rounded-xl hover:shadow-lg transition-all"
+                            >
+                                <FaGithub className="w-5 h-5" />
+                            </motion.a>
+                            <motion.a 
+                                whileHover={{ y: -2 }}
+                                href="https://www.linkedin.com/in/gowtham-raj-1061a5272/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="p-3 bg-blue-600 text-white rounded-xl hover:shadow-lg transition-all"
+                            >
+                                <FaLinkedin className="w-5 h-5" />
+                            </motion.a>
+                            <motion.a 
+                                whileHover={{ y: -2 }}
+                                href="https://gowthamraj24n.netlify.app"
+                                target="_blank"
+                                className="p-3 bg-emerald-500 text-white rounded-xl hover:shadow-lg transition-all"
+                            >
+                                <FaBriefcase className="w-5 h-5" />
+                            </motion.a>
+                            <motion.a 
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                                href="mailto:mgowthamraj9491@gmail.com"
+                                className="px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-xl hover:shadow-lg transition-all flex items-center gap-2 font-medium"
+                            >
+                                <FaEnvelope className="w-5 h-5" />
+                                <span>Contact</span>
+                            </motion.a>
+
+
+                        </div>
+                    </div>
+
+                    {/* Right Column - Skills */}
+                    <div className="lg:w-2/3">
+    <h4 className="text-2xl font-bold text-gray-800 mb-6">Ready to Transform Your Ideas</h4>
+    
+    <div className="space-y-8">
+
+
+        {/* Web Technologies */}
+        <div>
+            <h5 className="text-lg font-semibold text-emerald-600 mb-4">Web Technologies</h5>
+            <div className="flex flex-wrap gap-3">
+                {[
+                    { icon: <FaReact />, name: 'React.js', color: 'bg-blue-100 text-blue-600' },
+                    { icon: <FaNodeJs />, name: 'Node.js', color: 'bg-green-100 text-green-600' },
+                    { icon: <SiExpress />, name: 'Express.js', color: 'bg-gray-100 text-gray-600' },
+                    { icon: <FaHtml5 />, name: 'HTML5', color: 'bg-orange-100 text-orange-600' },
+                    { icon: <FaCss3 />, name: 'CSS3', color: 'bg-blue-100 text-blue-600' },
+                    { icon: <SiTailwindcss />, name: 'TailwindCSS', color: 'bg-teal-100 text-teal-600' },
+                    { icon: <FaServer />, name: 'RESTful APIs', color: 'bg-indigo-100 text-indigo-600' }
+                ].map((tool, index) => (
+                    <motion.div
+                        key={index}
+                        whileHover={{ scale: 1.05 }}
+                        className={`flex items-center gap-2 px-4 py-2 rounded-lg ${tool.color}`}
+                    >
+                        {tool.icon}
+                        <span>{tool.name}</span>
+                    </motion.div>
+                ))}
             </div>
-            <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
-                Building G-BUDDY to revolutionize how students collaborate and learn together. Let's make education more accessible and enjoyable.
-            </p>
-            <div className="flex justify-center space-x-4">
-                <Link 
-                    to="https://github.com/yourusername" 
-                    className="text-gray-600 hover:text-emerald-600 transition-colors"
-                >
-                    <FaGithub className="w-6 h-6" />
-                </Link>
-                <Link 
-                    to="https://linkedin.com/in/yourusername" 
-                    className="text-gray-600 hover:text-emerald-600 transition-colors"
-                >
-                    <FaLinkedin className="w-6 h-6" />
-                </Link>
+        </div>
+
+        {/* Databases */}
+        <div>
+            <h5 className="text-lg font-semibold text-blue-600 mb-4">Databases</h5>
+            <div className="flex flex-wrap gap-3">
+                {[
+                    { icon: <SiPostgresql />, name: 'PostgreSQL', color: 'bg-blue-100 text-blue-600' },
+                    { icon: <SiMongodb />, name: 'MongoDB', color: 'bg-green-100 text-green-600' },
+                    { icon: <SiMysql />, name: 'MySQL', color: 'bg-orange-100 text-orange-600' }
+                ].map((tool, index) => (
+                    <motion.div
+                        key={index}
+                        whileHover={{ scale: 1.05 }}
+                        className={`flex items-center gap-2 px-4 py-2 rounded-lg ${tool.color}`}
+                    >
+                        {tool.icon}
+                        <span>{tool.name}</span>
+                    </motion.div>
+                ))}
+            </div>
+        </div>
+
+        {/* Tools & Platforms */}
+        <div>
+            <h5 className="text-lg font-semibold text-gray-600 mb-4">Tools & Platforms</h5>
+            <div className="flex flex-wrap gap-3">
+                {[
+                    { icon: <FaGit />, name: 'Git', color: 'bg-orange-100 text-orange-600' },
+                    { icon: <FaGithub />, name: 'GitHub', color: 'bg-gray-100 text-gray-700' },
+              
+                    { icon: <SiCloudflare />, name: 'Cloudflare', color: 'bg-orange-100 text-orange-600' },
+                    { icon: <SiPostman />, name: 'Postman', color: 'bg-orange-100 text-orange-600' },
+                    
+                ].map((tool, index) => (
+                    <motion.div
+                        key={index}
+                        whileHover={{ scale: 1.05 }}
+                        className={`flex items-center gap-2 px-4 py-2 rounded-lg ${tool.color}`}
+                    >
+                        {tool.icon}
+                        <span>{tool.name}</span>
+                    </motion.div>
+                ))}
+            </div>
+        </div>
+    </div>
+</div>
+
+                   
+                    
+                </div>
             </div>
         </motion.div>
     </div>
 </section>
+
 
 
             {/* <Footer /> */}
@@ -140,35 +300,37 @@ const Dashboard = () => {
 const features = [
     {
         icon: <FaBook className="w-6 h-6" />,
-        title: "Smart Notes Sharing",
-        description: "Share and access quality study materials with your peers instantly"
+        title: "Centralized Study Resources",
+        description: "Upload and access PDFs, notes, and study guides in one place."
     },
     {
-        icon: <FaUsers className="w-6 h-6" />,
-        title: "Study Groups",
-        description: "Form and join subject-specific study groups for better collaboration"
+        icon: <FaSearch className="w-6 h-6" />,
+        title: "Advanced Search",
+        description: "Quickly find resources by subject, keywords, or contributors."
+    },
+    {
+        icon: <FaGraduationCap className="w-6 h-6" />,
+        title: "Smart Learning Hub",
+        description: "Access curated study materials, learning resources tailored to your curriculum."
+    },
+    {
+        icon: <FaStore className="w-6 h-6" />,
+        title: "Student Marketplace",
+        description: "Buy, sell, or exchange academic resources, study materials, and educational tools with fellow students."
+    },
+    {
+        icon: <FaCalendarAlt className="w-6 h-6" />,
+        title: "Smart Scheduling",
+        description: "Organize study sessions, set reminders, and manage academic deadlines efficiently."
     },
     {
         icon: <FaChalkboardTeacher className="w-6 h-6" />,
-        title: "Expert Connect",
-        description: "Connect with subject matter experts and mentors"
-    },
-    {
-        icon: <FaRocket className="w-6 h-6" />,
-        title: "Career Resources",
-        description: "Access internship opportunities and career guidance"
-    },
-    {
-        icon: <FaLaptopCode className="w-6 h-6" />,
-        title: "Online Workshops",
-        description: "Participate in skill-building workshops and webinars"
-    },
-    {
-        icon: <FaBook className="w-6 h-6" />,
-        title: "Resource Library",
-        description: "Access a vast library of study materials and previous papers"
+        title: "Peer Tutoring",
+        description: "Find or become a peer tutor, share expertise, and grow together academically."
     }
 ];
+
+
 
 const stats = [
     { number: "10K+", label: "Active Users" },

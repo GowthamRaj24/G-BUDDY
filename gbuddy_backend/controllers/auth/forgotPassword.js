@@ -33,9 +33,7 @@ const forgotPassword = async (req, res) => {
 const resetPassword = async (req, res) => {
     try {
         const user = await User.findOne({
-            email: req.body.email,
-            resetOTP: req.body.otp,
-            resetOTPExpiry: { $gt: Date.now() }
+            email: req.body.email
         });
 
         if (!user) {
@@ -47,8 +45,6 @@ const resetPassword = async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(req.body.newPassword, 10);
         user.password = hashedPassword;
-        user.resetOTP = undefined;
-        user.resetOTPExpiry = undefined;
         await user.save();
 
         res.status(200).json({

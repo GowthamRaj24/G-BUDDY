@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { 
@@ -6,6 +6,23 @@ import {
     FaEye, FaFileUpload, FaDownload
 } from 'react-icons/fa';
 import NotesCard from "../../components/NoteCard";
+import axios from 'axios';
+import Header from '../../components/Header';
+
+const useDebounce = (value, delay) => {
+    const [debouncedValue, setDebouncedValue] = useState(value);
+
+    useEffect(() => {
+        const handler = setTimeout(() => {
+            setDebouncedValue(value);
+        }, delay);
+
+        return () => clearTimeout(handler);
+    }, [value, delay]);
+
+    return debouncedValue;
+};
+
 
 const quickActions = [
     {
@@ -31,114 +48,154 @@ const quickActions = [
     }
 ];
 
-const topNotes = [
-    {
-        _id: 1,
-        title: "Introduction to Data Structures",
-        description: "Comprehensive notes covering arrays, linked lists, and basic algorithms",
-        sem: 3,
-        subject: "Data Structures",
-        unit: 1,
-        faculty: "Dr. Smith",
-        documentUrl: "https://example.com/doc1.pdf",
-        format: "PDF",
-        date: new Date(),
-    },
-    {
-        _id: 2,
-        title: "Digital Electronics Fundamentals",
-        description: "Complete guide to boolean algebra and logic gates eaw awd af daw",
-        sem: 2,
-        subject: "Digital Electronics",
-        unit: 2,
-        faculty: "Prof. Johnson",
-        documentUrl: "https://example.com/doc2.pdf",
-        format: "PDF",
-        date: new Date(),
-    },
-    {
-        _id: 3,
-        title: "Machine Learning Basics",
-        description: "Introduction to supervised and unsupervised learning algorithms",
-        sem: 5,
-        subject: "Machine Learning",
-        unit: 1,
-        faculty: "Dr. Williams",
-        documentUrl: "https://example.com/doc3.pdf",
-        format: "PDF",
-        date: new Date(),
-    }
-];
-
 const NotesHub = () => {
     const [searchQuery, setSearchQuery] = useState('');
+    const [notes, setNotes] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const debouncedSearch = useDebounce(searchQuery, 500);
+
+    useEffect(() => {
+        if (debouncedSearch) {
+            searchNotes();
+        } else {
+            fetchLatestNotes();
+        }
+    }, [debouncedSearch]);
+
+    // Fetch notes when search query changes
+    useEffect(() => {
+        if (searchQuery) {
+            searchNotes();
+        } else {
+            fetchLatestNotes();
+        }
+    }, [searchQuery]);
+
+    const fetchLatestNotes = async () => {
+        try {
+            setLoading(true);
+            const response = await axios.post('http://localhost:4001/notes/getLatestNotes');
+            setNotes(response.data.data);
+            setLoading(false);
+        } catch (error) {
+            console.error('Error fetching notes:', error);
+            setLoading(false);
+        }
+    };
+
+    const searchNotes = () => {
+        
+    };
+
 
     return (
-        <div className="min-h-screen bg-gray-50">
-            {/* Hero Section */}
-            <div className="bg-gradient-to-r from-emerald-600 to-teal-600 pt-24 pb-12 px-6">
-                <div className="max-w-7xl mx-auto">
-                    <div className="flex flex-col md:flex-row justify-between items-center mb-8">
-                        <div>
-                            <h1 className="text-3xl font-bold text-white mb-2">Academic Notes Hub</h1>
-                            <p className="text-emerald-100">Access and share academic resources</p>
-                        </div>
-                    </div>
-
-                    {/* Search Bar */}
-                    <div className="bg-white p-4 rounded-xl shadow-lg">
-                        <div className="relative">
-                            <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                            <input
-                                type="text"
-                                placeholder="Search notes by title, subject, or faculty..."
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                                className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-emerald-500"
-                            />
+            <div className="min-h-screen bg-gray-50">
+                {/* <Header /> */}
+                {/* Enhanced Hero Section */}
+                <div className="bg-gradient-to-r from-emerald-600 to-teal-600 pt-20 pb-24 px-6 relative overflow-hidden">
+                    <div className="absolute inset-0 bg-grid-white/[0.05] -z-0" />
+                    <div className="max-w-7xl mx-auto relative z-10">
+                        <div className="flex flex-col md:flex-row justify-between items-center gap-16">
+                            {/* Left Content */}
+                            <div className="flex-1">
+                                <motion.div 
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    className="mb-8"
+                                >
+                                    <div className="inline-block px-4 py-2 bg-emerald-500/20 rounded-full mb-6">
+                                        <span className="text-emerald-100">✨ Welcome to G-BUDDY</span>
+                                    </div>
+                                    <h1 className="text-5xl font-bold text-white mb-4 leading-tight">
+                                        Academic Notes Hub
+                                    </h1>
+                                    <p className="text-emerald-100 text-lg leading-relaxed">
+                                        Your comprehensive study companion for seamless learning and academic excellence
+                                    </p>
+                                </motion.div>
+                            </div>
+    
+                            {/* Right Content */}
+                            <div className="flex-1">
+                                <motion.div 
+                                    initial={{ opacity: 0, x: 20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    className="bg-white/10 backdrop-blur-lg p-8 rounded-2xl hover:bg-white/20 transition-all duration-300"
+                                >
+                                    <h3 className="text-white text-2xl font-semibold mb-4">Smart Features</h3>
+                                    <ul className="text-emerald-100 space-y-4">
+                                        <li className="flex items-center gap-3">
+                                            <span className="bg-white/20 p-2 rounded-lg">📚</span>
+                                            <span>Intelligent Notes Organization</span>
+                                        </li>
+                                        <li className="flex items-center gap-3">
+                                            <span className="bg-white/20 p-2 rounded-lg">🎯</span>
+                                            <span>Focused Learning Path</span>
+                                        </li>
+                                        <li className="flex items-center gap-3">
+                                            <span className="bg-white/20 p-2 rounded-lg">🤖</span>
+                                            <span>Smart Content Recommendations</span>
+                                        </li>
+                                    </ul>
+                                </motion.div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div className="max-w-7xl mx-auto px-6 py-8">
-                {/* Quick Actions */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-                    {quickActions.map((action, index) => (
-                        <Link to={action.link} key={index}>
-                            <motion.div
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: index * 0.1 }}
-                                className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-all cursor-pointer group"
-                            >
-                                <div className={`w-12 h-12 ${action.bgColor} rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
-                                    {action.icon}
-                                </div>
-                                <h3 className="font-medium text-lg mb-2 group-hover:text-emerald-600 transition-colors">{action.title}</h3>
-                                <p className="text-gray-600">{action.description}</p>
-                            </motion.div>
-                        </Link>
-                    ))}
-                </div>
-
-                {/* Latest Notes */}
-                <div className="mb-8">
-                    <div className="flex justify-between items-center mb-6">
-                        <h2 className="text-2xl font-bold text-gray-800">Latest Notes</h2>
-                        <Link to="/notes/all" className="text-emerald-600 hover:text-emerald-700 font-medium">
-                            View All Notes
-                        </Link>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        {topNotes.map((note, index) => (
-                            <NotesCard key={note._id} note={note} />
+    
+                <div className="max-w-7xl mx-auto px-6 -mt-12 relative z-20">
+                    {/* Quick Actions */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+                        {quickActions.map((action, index) => (
+                            <Link to={action.link} key={index}>
+                                <motion.div
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: index * 0.1 }}
+                                    className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer group"
+                                >
+                                    <div className={`w-14 h-14 ${action.bgColor} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                                        {action.icon}
+                                    </div>
+                                    <h3 className="font-semibold text-xl mb-2 group-hover:text-emerald-600 transition-colors">
+                                        {action.title}
+                                    </h3>
+                                    <p className="text-gray-600 leading-relaxed">
+                                        {action.description}
+                                    </p>
+                                </motion.div>
+                            </Link>
                         ))}
                     </div>
+    
+                    {/* Latest Notes Section */}
+                    <div className="mb-12">
+                        <div className="flex justify-between items-center mb-8">
+                            <h2 className="text-3xl font-bold text-gray-800">Latest Notes</h2>
+                            <Link 
+                                to="/notes/all" 
+                                className="flex items-center gap-2 text-emerald-600 hover:text-emerald-700 font-medium transition-colors"
+                            >
+                                View All Notes
+                                <span className="text-xl">→</span>
+                            </Link>
+                        </div>
+    
+                        {loading ? (
+                            <div className="flex justify-center items-center h-64">
+                                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500"></div>
+                            </div>
+                        ) : (
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                                {notes.map((note) => (
+                                    <NotesCard key={note._id} note={note} />
+                                ))}
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
-        </div>
-    );
-};
+        );
+    };
 
 export default NotesHub;

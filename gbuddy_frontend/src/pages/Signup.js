@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FaGraduationCap, FaGoogle, FaGithub } from 'react-icons/fa';
 import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
 
 const SignUp = () => {
     const navigate = useNavigate();
@@ -17,6 +18,7 @@ const SignUp = () => {
     const [timeLeft, setTimeLeft] = useState(600);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const [sentOTP, setSentOTP] = useState(0);
 
     useEffect(() => {
         if (step === 2) {
@@ -31,14 +33,42 @@ const SignUp = () => {
         e.preventDefault();
         setLoading(true);
         setError('');
+        if (!formData.username || !formData.email || !formData.phone || !formData.password) {
+            setError('All fields are required');
+            setLoading(false);
+            return;
+        }
+        if (formData.password.length < 6) {
+            setError('Password must be at least 6 characters long');
+            setLoading(false);
+            return;
+        }
+        if (formData.phone.length !== 10) {
+            setError('Phone number must be 10 digits long');
+            setLoading(false);
+            return;
+        }
+        if (!/^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/.test(formData.email)) {
+            setError('Invalid email address');
+            setLoading(false);
+            return;
+        }
 
         try {
-            const res = await axios.post("http://localhost:4001" + "/auth/sendOTP", { email: formData.email });
-            if (res.success) {
-                setStep(2);
-                console.log("OTP sent successfully");
-            }
-        } catch (err) {
+            await axios.post("http://localhost:4001/auth/sendOTP", { email: formData.email })
+            .then((r) => {
+                    console.log(r.data)
+                    console.log("OTP sent successfully "+r.data.otp);
+                    setSentOTP(r.data.otp);
+                    setStep(2);
+                    console.log("OTP sent successfully");
+            })
+            .catch((err) => {
+                setError(err.response?.data?.message || 'Failed to send OTP');
+            });
+        }
+
+         catch (err) {
             setError(err.response?.data?.message || 'Failed to send OTP');
             console.log(err.response?.data?.message || 'Failed to send OTP');
         } finally {
@@ -70,7 +100,7 @@ const SignUp = () => {
     const handleResendOTP = async () => {
         setLoading(true);
         try {
-            await axios.post("http://localhost:4001" + "/auth/sendOTP", { email: formData.email });
+            await axios.post("http://localhost:4001/auth/sendOTP", { email: formData.email });
             setTimeLeft(600);
         } catch (err) {
             setError(err.response?.data?.message);
@@ -86,17 +116,29 @@ const SignUp = () => {
 
         try {
             const enteredOTP = otp.join('');
-            await axios.post("http://localhost:4001" + "/auth/verifyOTP", {
+            const enteredOTPStr = enteredOTP.toString();
+            const sentOTPStr = sentOTP.toString();
+            console.log(enteredOTPStr, sentOTPStr);
+            await axios.post("http://localhost:4001/auth/verifyOTP", {
                 email: formData.email,
-                enteredotp: enteredOTP
-            });
-
-            const response = await axios.post("http://localhost:4001" + "/auth/signup", formData);
-            if (response.data.success) {
-                localStorage.setItem('token', response.data.token);
-                localStorage.setItem('user', JSON.stringify(response.data.data));
-                navigate('/home');
-            }
+                enteredotp: enteredOTPStr,
+                sentotp : sentOTPStr
+            })
+            .then(async (r) =>{
+                console.log("OTP Verified " + r);
+                await axios.post("http://localhost:4001/auth/signup", {email: formData.email, username: formData.username, phone: formData.phone, password: formData.password})
+                .then((response) => {
+                    console.log(response.data);
+                    localStorage.setItem('token', response.data.token);
+                    localStorage.setItem('user', JSON.stringify(response.data.userdata));
+                    navigate('/home');
+                })
+                .catch((err) => {
+                    setError(err.response?.data?.message || 'Failed to create account');
+                })
+                }
+            )
+    
         } catch (err) {
             setError(err.response?.data?.message);
         } finally {
@@ -106,6 +148,7 @@ const SignUp = () => {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 flex items-center justify-center px-6 py-12">
+            <ToastContainer />
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -200,6 +243,7 @@ const SignUp = () => {
                                 type="submit"
                                 disabled={loading}
                                 className="w-full py-3 px-4 rounded-lg bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-medium hover:shadow-lg hover:shadow-emerald-200 transition-all disabled:opacity-50"
+                                
                             >
                                 {loading ? 'Creating Account...' : 'Create Account'}
                             </button>

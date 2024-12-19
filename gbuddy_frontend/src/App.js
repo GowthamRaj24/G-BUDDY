@@ -14,7 +14,24 @@ import ProductView from './pages/MarketPlace/ProductView';
 import AddProduct from './pages/MarketPlace/AddProduct';
 import ForgotPassword from './pages/ForgotPassword';
 import VerifyEmail from './pages/VerifyEmail';
+import Header from './components/Header';
+import ProfilePage from './pages/Profile';
+import EditProfile from './pages/editProfile';
+import RoadmapView from './pages/Resources/RoadmapView';
+import RoadmapHome from './pages/Resources/RoadmapHome';
+import CreateRoadmap from './pages/Resources/CreateRoadmap';
 
+
+const Layout = ({ children }) => {
+  return (
+      <>
+          <Header />
+          <main className="pt-16">
+              {children}
+          </main>
+      </>
+  );
+};
 
 
 function App() {
@@ -25,17 +42,23 @@ function App() {
         <Route path="/" element={<Dashboard />}/>
         <Route path='/signin' element={<SignIn/>}/>
         <Route path='/signup' element={<SignUp/>}/>
-        <Route path='/home' element={<UserHome/>}/>
-        <Route path='/notes' element={<NotesHub/>}/>
-        <Route path='/notes/all' element={<NotesLibrary/>}/>
-        <Route path='/notes/upload' element={<UploadNotes/>}/>
-        <Route path='/notes/saved' element={<SavedNotes/>}/>
-        <Route path='/notes/view' element={<NotesView/>}/>
-        <Route path='/marketplace' element={<Marketplace/>}/>
-        <Route path='/marketplace/product' element={<ProductView/>}/>
-        <Route path='/marketplace/addproduct' element={<AddProduct/>}/>
+        <Route path='/profile/:id' element={<Layout><ProfilePage/></Layout>}/>
+        <Route path='/home' element={<Layout><UserHome/></Layout>}/>
+        <Route path='/notes' element={<Layout><NotesHub/></Layout>}/>
+        <Route path='/notes/all' element={<Layout><NotesLibrary/></Layout>}/>
+        <Route path='/notes/upload' element={<Layout><UploadNotes/></Layout>}/>
+        <Route path='/notes/saved' element={<Layout><SavedNotes/></Layout>}/>
+        <Route path='/notes/:noteId' element={<Layout><NotesView/></Layout>}/>
+        <Route path='/marketplace' element={<Layout><Marketplace/></Layout>}/>
+        <Route path='/marketplace/:id' element={<Layout><ProductView/></Layout>}/>
+        <Route path='/marketplace/addproduct' element={<Layout><AddProduct/></Layout>}/>
         <Route path='/resetpassword' element={<ForgotPassword/>}/>
+        <Route path='/forgotpassword' element={<ForgotPassword/>}/>
         <Route path='/verify' element={<VerifyEmail/>}/>
+        <Route path='/roadmaps' element={<Layout><RoadmapHome /></Layout>}/>
+        <Route path='/editprofile' element={<Layout><EditProfile/></Layout>}/>
+        <Route path='/roadmaps/:id' element={<Layout><RoadmapView/></Layout>}/>
+        <Route path='/roadmaps/create' element={<Layout><CreateRoadmap/></Layout>}/>
       </Routes>
     </BrowserRouter>
 )};
