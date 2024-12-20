@@ -92,9 +92,7 @@ const getSavedNotes = async (req, res) => {
 
 const getLatestNotes =  async (req, res) => {
     try {
-        const notes = await Notes.find().sort({ createdAt: -1 })
-            .limit(3);
-        
+        const notes = await Notes.find().sort({ createdAt: -1 }).limit(3);  
         res.status(200).json({
             success: true,
             data: notes

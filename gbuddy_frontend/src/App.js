@@ -22,7 +22,6 @@ import RoadmapHome from './pages/Resources/RoadmapHome';
 import CreateRoadmap from './pages/Resources/CreateRoadmap';
 import {GoogleOAuthProvider} from '@react-oauth/google';
 
-
 const Layout = ({ children }) => {
   return (
       <>
@@ -37,7 +36,7 @@ const Layout = ({ children }) => {
 
 function App() {
   return (
-    <GoogleOAuthProvider clientId='838424253590-jb0517q26jg8h7k4rk8h491akf1e2beh.apps.googleusercontent.com'>
+    <GoogleOAuthProvider clientId={'838424253590-jb0517q26jg8h7k4rk8h491akf1e2beh.apps.googleusercontent.com'}>
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Dashboard />}/>

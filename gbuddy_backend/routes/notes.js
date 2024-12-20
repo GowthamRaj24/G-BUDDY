@@ -8,6 +8,7 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
+const middleware = require("../middleware/auth.js");
 
 
 
@@ -31,5 +32,5 @@ routes
     .post("/searchNotes",fetchNotes.searchNotes)
     .delete("/deleteNote/:id", deleteNote.deleteNote);  
 
-    
+
 exports.route = routes;

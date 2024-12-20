@@ -6,6 +6,7 @@ const addNotes = async (req, res) => {
     try {
         const fileUrl = await uploadToDrive(req.file);
         console.log(fileUrl)
+        console.log(req.body)
 
         const notes = await Notes.create({
             title: req.body.title,
@@ -28,6 +29,7 @@ const addNotes = async (req, res) => {
         });
 
     } catch (error) {
+        console.log("error in addNotes--", error.message);
         res.status(400).json({
             success: false,
             message: "Failed to add notes",

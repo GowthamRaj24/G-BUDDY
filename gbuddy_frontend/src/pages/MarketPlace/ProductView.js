@@ -142,7 +142,7 @@ const ProductView = () => {
                             <motion.button
                                 whileHover={{ scale: 1.02 }}
                                 whileTap={{ scale: 0.98 }}
-                                onClick={() => window.location.href = `https://wa.me/+91${seller?.phone}`}
+                                onClick={() => window.location.href = `mailto:${seller?.email}`}
                                 className="w-full bg-emerald-500 text-white px-6 py-4 rounded-xl hover:bg-emerald-600 transition-colors shadow-lg font-medium text-lg"
                             >
                                 Contact Seller
@@ -181,7 +181,7 @@ const ProductView = () => {
 
             <div className="pt-4 border-t">
                 <a 
-                    href={`https://wa.me/+91${seller.phone}`}
+                    onClick={() => window.location.href = `mailto:${seller?.email}`}
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="w-full bg-green-500 text-white px-6 py-3 rounded-xl hover:bg-green-600 transition-colors flex items-center justify-center gap-2 shadow-lg"

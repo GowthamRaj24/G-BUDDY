@@ -1,8 +1,12 @@
-/gbuddy_backend/.env
-/gbuddy_backend/node_modules
+gbuddy_backend/.env
+gbuddy_backend/node_modules
 /gbuddy_frontend/node_modules
-/gbuddy_frontend/.env
+gbuddy_frontend/.env
 /gbuddy_backend/driveAPI
 /gbuddy_backend/middleware
 /gbuddy_backend/db.js
-/gbuddy_backend/.env
+gbuddy_backend/.env
+gbuddy_backend/controllers/notes/fetchNote.js
+/gbuddy_backend/driveAPI/credentials.json
+gbuddy_backend/middleware/auth.js
+gbuddy_backend/uploads

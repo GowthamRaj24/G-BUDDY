@@ -24,7 +24,7 @@ const SavedNotes = () => {
             try {
                 const user = JSON.parse(localStorage.getItem('user'));
                 const savedNoteIds = user.savedNotes || [];
-                
+
                 if (savedNoteIds.length === 0) return;
 
                 const response = await axios.post(BACKEND_URL+`/notes/getSavedNotes`, {

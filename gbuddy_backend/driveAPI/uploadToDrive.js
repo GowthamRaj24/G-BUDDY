@@ -7,14 +7,10 @@ const uploadToDrive = async (fileObject) => {
         parents: ['1_Hn39XjOA9vu9fhjYTz6Vm37MwYqDWVg']
     };
 
-    console.log(fileMetadata);
-
     const media = {
         mimeType: fileObject.mimetype,
         body: fs.createReadStream(fileObject.path)
     };
-
-    // console.log("media" + media);
 
     try {
         const response = await driveService.files.create({
@@ -25,7 +21,7 @@ const uploadToDrive = async (fileObject) => {
         });
         
 
-        console.log("res" + response.data.id)
+        console.log("res-- " + response.data.id)
 
         const fileUrl = `https://drive.google.com/uc?id=${response.data.id}`;
         fs.unlinkSync(fileObject.path);

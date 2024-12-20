@@ -34,6 +34,7 @@ const SignIn = () => {
                 
                 // Store user data and token
                 localStorage.setItem('token', response.data.token);
+                console.log(response.data.data);
                 localStorage.setItem('user', JSON.stringify(response.data.data));
                 
                 // Redirect to home

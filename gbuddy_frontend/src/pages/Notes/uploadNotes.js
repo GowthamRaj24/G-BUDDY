@@ -23,6 +23,7 @@ const UploadNotes = () => {
         faculty: 'DSA',
         file: null
     });
+
     const [dragActive, setDragActive] = useState(false);
 
     const handleDrag = (e) => {
@@ -95,6 +96,7 @@ const UploadNotes = () => {
         formDataToSend.append('title', formData.title);
         formDataToSend.append('sem', formData.sem);
         formDataToSend.append('userId', JSON.parse(localStorage.getItem('user'))._id);
+        console.log("userId: " + JSON.parse(localStorage.getItem('user'))._id);
         formDataToSend.append('subject', formData.subject);
         formDataToSend.append('unit', formData.unit);
         formDataToSend.append('format', formData.file.type);

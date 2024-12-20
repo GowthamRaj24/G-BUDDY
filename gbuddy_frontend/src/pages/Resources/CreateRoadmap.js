@@ -115,7 +115,7 @@ const CreateRoadmap = () => {
                                         <option value="">Select Category</option>
                                         <option value="Web Development">Web Development</option>
                                         <option value="Data Science">Data Science</option>
-                                        <option value="AI/ML">AI/ML</option>
+                                        <option value="AI_ML">AI/ML</option>
                                         <option value="DSA">DSA</option>
                                     </select>
                                 </div>
