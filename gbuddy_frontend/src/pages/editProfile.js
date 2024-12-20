@@ -55,7 +55,7 @@ const EditProfile = () => {
                 }
           });
             localStorage.setItem('user', JSON.stringify(response.data.data));
-            navigate('/profile' + userId);
+            navigate('/profile/' + userId);
         } catch (error) {
             setError(error.response?.data?.message || 'Failed to update profile');
         } finally {
