@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { FaGraduationCap, FaGoogle, FaGithub } from 'react-icons/fa';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
+import { useGoogleLogin } from '@react-oauth/google';
 
 const SignUp = () => {
     const navigate = useNavigate();
@@ -19,6 +20,65 @@ const SignUp = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [sentOTP, setSentOTP] = useState(0);
+
+    const LoginwithGoogle = useGoogleLogin({
+        onSuccess: async (tokenResponse) => {
+            setLoading(true);
+            
+            try {
+                // Get user info from Google
+                const userInfo = await axios.get(
+                    'https://www.googleapis.com/oauth2/v3/userinfo',
+                    { headers: { Authorization: `Bearer ${tokenResponse.access_token}` } }
+                );
+    
+                // Send to your backend
+                const response = await axios.post("http://localhost:4001/auth/signinGoogle", {
+                    googleUser: userInfo.data
+                });
+    
+                console.log("Sign in successful:", response.data);
+                
+                // Store user data and token
+                localStorage.setItem('token', response.data.token);
+                localStorage.setItem('user', JSON.stringify(response.data.data));
+                
+                // Redirect to home
+                window.location.href = "/home";
+                
+            } catch (error) {
+                console.log("Sign in error:", error);
+                setLoading(false);
+                
+                const errorMessage = error.response?.data?.message || "Google sign in failed";
+                
+                toast.error(errorMessage, {
+                    position: "top-right",
+                    autoClose: 3500,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            }
+        },
+        onError: () => {
+            setLoading(false);
+            toast.error("Google sign in failed", {
+                position: "top-right",
+                autoClose: 3500,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+        }
+    });
+    
+
+
 
     useEffect(() => {
         if (step === 2) {
@@ -258,15 +318,22 @@ const SignUp = () => {
                                     </div>
                                 </div>
 
-                                <div className="mt-6 grid grid-cols-2 gap-3">
-                                    <button className="flex items-center justify-center px-4 py-3 rounded-lg border border-gray-300 hover:border-emerald-500 hover:shadow-lg transition-all">
-                                        <FaGoogle className="text-red-500" />
-                                        <span className="ml-2">Google</span>
-                                    </button>
-                                    <button className="flex items-center justify-center px-4 py-3 rounded-lg border border-gray-300 hover:border-emerald-500 hover:shadow-lg transition-all">
-                                        <FaGithub className="text-gray-900" />
-                                        <span className="ml-2">GitHub</span>
-                                    </button>
+                                <div className="mt-6 grid grid-cols-1 gap-3">
+                                <button 
+    onClick={() => LoginwithGoogle()}
+    disabled={loading}
+    className="flex items-center justify-center px-4 py-3 rounded-lg border border-gray-300 hover:border-emerald-500 hover:shadow-lg transition-all"
+>
+    {loading ? (
+        <span>Loading...</span>
+    ) : (
+        <>
+            <FaGoogle className="text-red-500" />
+            <span className="ml-2">Google</span>
+        </>
+    )}
+</button>
+                                
                                 </div>
                             </div>
                         </form>

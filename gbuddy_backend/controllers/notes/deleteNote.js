@@ -15,8 +15,6 @@ const deleteNote = async (req, res) => {
 
         const userId = note.userId;
         const user = await User.findById(userId);
-
-        // Update user's notes array using proper MongoDB array operations
         await User.findByIdAndUpdate(userId, {
             $pull: { notes: note._id }
         });

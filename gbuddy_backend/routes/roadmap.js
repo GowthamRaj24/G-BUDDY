@@ -18,6 +18,6 @@ routes
     .patch("/roadmap/:id", middleware.auth,updateRoadmap.updateRoadmap)
     .patch("/roadmap/:roadmapId/topic/:topicId", middleware.auth,updateRoadmap.updateTopic)
     .delete("/roadmap/:id",middleware.auth, deleteRoadmap.deleteRoadmap)
-    .delete("/roadmap/:roadmapId/topic/:topicId", deleteRoadmap.deleteTopic);
+    .delete("/roadmap/:roadmapId/topic/:topicId",middleware.auth, deleteRoadmap.deleteTopic);
 
 exports.route = routes;
