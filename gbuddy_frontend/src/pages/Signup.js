@@ -16,6 +16,7 @@ const SignUp = () => {
         password: '',
         phone: ''
     });
+
     const [otp, setOtp] = useState(['', '', '', '', '', '']);
     const [timeLeft, setTimeLeft] = useState(600);
     const [loading, setLoading] = useState(false);
@@ -27,13 +28,11 @@ const SignUp = () => {
             setLoading(true);
             
             try {
-                // Get user info from Google
                 const userInfo = await axios.get(
                     'https://www.googleapis.com/oauth2/v3/userinfo',
                     { headers: { Authorization: `Bearer ${tokenResponse.access_token}` } }
                 );
     
-                // Send to your backend
                 const response = await axios.post(BACKEND_URL+"/auth/signinGoogle", {
                     googleUser: userInfo.data
                 });

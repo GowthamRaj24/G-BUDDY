@@ -12,7 +12,8 @@ const uploadToDrive = async (fileObject) => {
         body: fs.createReadStream(fileObject.path)
     };
 
-    const response = await driveService.files.create({
+
+    const response = driveService.files.create({
         resource: fileMetadata,
         media: media,
         fields: 'id'
@@ -21,7 +22,7 @@ const uploadToDrive = async (fileObject) => {
     const fileId = response.data.id;
     const fileUrl = `https://drive.google.com/uc?id=${fileId}`;
     
-    // Clean up the temporary file
+    console.log(fileUrl);
     fs.unlinkSync(fileObject.path);
 
     return fileUrl;

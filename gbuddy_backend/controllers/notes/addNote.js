@@ -19,6 +19,8 @@ const addNotes = async (req, res) => {
             documentUrl: fileUrl
         });
 
+        console.log("notes:", notes);
+
         res.status(201).json({
             success: true,
             data: notes,
