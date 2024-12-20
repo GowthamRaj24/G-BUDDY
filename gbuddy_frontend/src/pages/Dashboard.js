@@ -349,8 +349,8 @@ const features = [
     },
     {
         icon: <FaCalendarAlt className="w-6 h-6" />,
-        title: "Smart Scheduling",
-        description: "Organize study sessions, set reminders, and manage academic deadlines efficiently."
+        title: "Smart Roadmaps",
+        description: "Empowering learners with community-driven roadmaps to master new tech skills and accelerate their career growth."
     },
     {
         icon: <FaChalkboardTeacher className="w-6 h-6" />,
