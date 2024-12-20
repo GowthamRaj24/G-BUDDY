@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import NotesCard from '../../components/NoteCard';
 import { FaFilter, FaSearch, FaBookOpen, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import  Header  from '../../components/Header';
+import { BACKEND_URL } from '../backendURL';
 
 const Pagination = ({ currentPage, totalPages, onPageChange }) => (
     <div className="flex items-center justify-center space-x-2 mt-8">
@@ -72,7 +73,7 @@ const NotesLibrary = () => {
             //     throw new Error('No token found');
             // }
 
-            const response = await fetch('http://localhost:4001/notes/fetchAllNotes', {
+            const response = await fetch(BACKEND_URL+'/notes/fetchAllNotes', {
                 method: 'GET', 
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -135,7 +136,7 @@ const NotesLibrary = () => {
     const handleDeleteNote = async (noteId) => {
         try {
             const token = JSON.parse(localStorage.getItem('token'));
-            const response = await fetch(`http://localhost:4001/notes/deleteNotes/${noteId}`, {
+            const response = await fetch(BACKEND_URL+`/notes/deleteNotes/${noteId}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`

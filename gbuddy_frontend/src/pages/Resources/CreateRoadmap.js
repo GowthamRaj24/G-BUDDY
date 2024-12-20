@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FaPlus, FaTrash, FaLink } from 'react-icons/fa';
 import axios from 'axios';
+import { BACKEND_URL } from '../backendURL';
 
 const CreateRoadmap = () => {
     const navigate = useNavigate();
@@ -25,7 +26,7 @@ const CreateRoadmap = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:4001/roadmaps/createRoadmap', {
+            const response = await axios.post(BACKEND_URL+'/roadmaps/createRoadmap', {
                 ...formData,
                 author: JSON.parse(localStorage.getItem('user'))._id
             }, {

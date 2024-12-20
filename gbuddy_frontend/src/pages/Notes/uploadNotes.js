@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { FaCloudUploadAlt, FaFile, FaCheck, FaTimes } from 'react-icons/fa';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
+import { BACKEND_URL } from '../backendURL';
 
 const steps = [
     { id: 1, title: 'Upload File' },
@@ -88,7 +89,7 @@ const UploadNotes = () => {
 
 
         e.preventDefault();
-        await axios.post("http://localhost:4001/notes/addNotes", 
+        await axios.post(BACKEND_URL+"/notes/addNotes", 
             {
                 title: formData.title,
                 sem : formData.sem,

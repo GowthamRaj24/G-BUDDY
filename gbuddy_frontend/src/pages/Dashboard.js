@@ -34,6 +34,7 @@ import "./main.css"
 import { PrimaryButton, SecondaryButton } from '../components/Button';
 import { FeatureCard } from '../components/Card';
 import axios from 'axios';
+import { BACKEND_URL } from './backendURL';
 
 const Dashboard = () => {
     const navigate = useNavigate();
@@ -44,7 +45,7 @@ const Dashboard = () => {
             if (!user) return;
 
             try {
-                const response = await axios.get(`http://localhost:4001/users/fetchUser/${user._id}`, {
+                const response = await axios.get(BACKEND_URL+`/users/fetchUser/${user._id}`, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('token')}`
                     }

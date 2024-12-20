@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import axios from 'axios';
+import { BACKEND_URL } from './backendURL';
 
 const EditProfile = () => {
     const navigate = useNavigate();
@@ -30,7 +31,7 @@ const EditProfile = () => {
     const fetchUserData = async () => {
         try {
             const userId = JSON.parse(localStorage.getItem('user'))._id;
-            const response = await axios.get(`http://localhost:4001/users/fetchUser/${userId}`, {
+            const response = await axios.get(BACKEND_URL+`/users/fetchUser/${userId}`, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`
                 }
@@ -48,7 +49,7 @@ const EditProfile = () => {
 
         try {
             const userId = JSON.parse(localStorage.getItem('user'))._id;
-            const response = await axios.put(`http://localhost:4001/users/updateProfile/${userId}`, formData, {
+            const response = await axios.put(BACKEND_URL+`/users/updateProfile/${userId}`, formData, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`
                 }

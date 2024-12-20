@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import NotesCard from '../../components/NoteCard';
 import { FaFilter, FaSearch, FaBookOpen, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { Pagination , EmptyState } from './NotesLibrary';
+import { BACKEND_URL } from '../backendURL';
 
 const SavedNotes = () => {
     const [notes, setNotes] = useState([]);
@@ -26,7 +27,7 @@ const SavedNotes = () => {
                 
                 if (savedNoteIds.length === 0) return;
 
-                const response = await axios.post(`http://localhost:4001/notes/getSavedNotes`, {
+                const response = await axios.post(BACKEND_URL+`/notes/getSavedNotes`, {
                      noteIds: savedNoteIds 
                 }, {
                     headers: {

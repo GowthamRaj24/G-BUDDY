@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { FaCloudUploadAlt, FaTrash } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { BACKEND_URL } from '../backendURL';
 
 const AddProduct = () => {
     const navigate = useNavigate();
@@ -126,7 +127,7 @@ const AddProduct = () => {
             });
 
             const response = await axios.post(
-                "http://localhost:4001/products/addProduct", 
+                BACKEND_URL+"/products/addProduct", 
                 formDataToSend,
                 {
                     headers: {

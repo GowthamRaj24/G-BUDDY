@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FaLink, FaClock, FaBookmark, FaShare, FaEdit } from 'react-icons/fa';
 import axios from 'axios';
+import { BACKEND_URL } from '../backendURL';
 
 const RoadmapView = () => {
     const { id } = useParams();
@@ -13,7 +14,7 @@ const RoadmapView = () => {
     useEffect(() => {
         const fetchRoadmap = async () => {
             try {
-                const response = await axios.get(`http://localhost:4001/roadmaps/roadmap/${id}`, {
+                const response = await axios.get(BACKEND_URL+`/roadmaps/roadmap/${id}`, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('token')}`
                     }

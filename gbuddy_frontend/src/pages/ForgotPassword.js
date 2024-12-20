@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { FaGraduationCap } from 'react-icons/fa';
 import axios from 'axios';
+import { BACKEND_URL } from './backendURL';
 
 const ForgotPassword = () => {
     const navigate = useNavigate();
@@ -33,7 +34,7 @@ const ForgotPassword = () => {
         setError('');
 
         try {
-            const response = await axios.post("http://localhost:4001/auth/sendOTP", { 
+            const response = await axios.post(BACKEND_URL+"/auth/sendOTP", { 
                 email: formData.email 
             });
             setSentOTP(response.data.otp);
@@ -74,7 +75,7 @@ const ForgotPassword = () => {
 
         try {
             const enteredOTP = otp.join('');
-            const response = await axios.post("http://localhost:4001/auth/verifyOTP", {
+            const response = await axios.post(BACKEND_URL+"/auth/verifyOTP", {
                 email: formData.email,
                 enteredotp: enteredOTP,
                 sentotp: sentOTP.toString()
@@ -98,7 +99,7 @@ const ForgotPassword = () => {
         setError('');
 
         try {
-            await axios.post("http://localhost:4001/auth/resetPassword", {
+            await axios.post(BACKEND_URL+"/auth/resetPassword", {
                 email: formData.email,
                 newPassword: formData.newPassword
             });

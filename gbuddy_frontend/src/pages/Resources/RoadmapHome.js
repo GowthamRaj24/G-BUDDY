@@ -3,6 +3,7 @@ import { FaSearch, FaFilter, FaBookOpen, FaCode, FaRobot, FaDatabase } from 'rea
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { BACKEND_URL } from '../backendURL';
 
 const RoadmapHome = () => {
     const navigate = useNavigate();
@@ -21,7 +22,7 @@ const RoadmapHome = () => {
     useEffect(() => {
         const fetchRoadmaps = async () => {
             try {
-                const response = await axios.get('http://localhost:4001/roadmaps/roadmaps', {
+                const response = await axios.get(BACKEND_URL+'/roadmaps/roadmaps', {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('token')}`
                     }
@@ -48,7 +49,7 @@ const RoadmapHome = () => {
 
     const handleCategoryClick = async (categoryName) => {
         try {
-            const response = await axios.get(`http://localhost:4001/roadmaps/roadmaps/category/${categoryName}`, {
+            const response = await axios.get(BACKEND_URL+`/roadmaps/roadmaps/category/${categoryName}`, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`
                 }

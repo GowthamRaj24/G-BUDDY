@@ -1,0 +1,1 @@
+export const BACKEND_URL = "https://g-buddy-1.onrender.com"

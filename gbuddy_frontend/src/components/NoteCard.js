@@ -3,6 +3,7 @@ import { useState , useEffect } from 'react';
 import { FaBookmark, FaFileAlt, FaCalendarAlt, FaUserGraduate, FaDownload, FaEye } from 'react-icons/fa';
 import { MdSubject, MdSchool } from 'react-icons/md';
 import axios from 'axios';
+import { BACKEND_URL } from '../pages/backendURL';
 import { useNavigate } from 'react-router-dom';
 
 const PDFPreview = ({ documentUrl }) => {
@@ -40,7 +41,7 @@ const NotesCard = ({ note }) => {
 
   const handleSave = async () => {
       try {
-          const response = await axios.post(`http://localhost:4001/notes/saveNote`, {
+          const response = await axios.post(BACKEND_URL+`/notes/saveNote`, {
               noteId: note._id,
               userId: user._id
           } , {

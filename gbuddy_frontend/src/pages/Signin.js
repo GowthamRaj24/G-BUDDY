@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import { useGoogleLogin } from '@react-oauth/google';
+import { BACKEND_URL } from './backendURL';
 
 const SignIn = () => {
     const [email, setEmail] = useState('');
@@ -25,7 +26,7 @@ const SignIn = () => {
                 );
     
                 // Send to your backend
-                const response = await axios.post("http://localhost:4001/auth/signinGoogle", {
+                const response = await axios.post(BACKEND_URL+"/auth/signinGoogle", {
                     googleUser: userInfo.data
                 });
     
@@ -74,7 +75,7 @@ const SignIn = () => {
         e.preventDefault();
         console.log(email, password);
         setLoading(true);
-        await axios.post("http://localhost:4001/auth/signin" , {email : email , password : password})
+        await axios.post(BACKEND_URL+"/auth/signin" , {email : email , password : password})
         .then((res) => {
             console.log(res);
             localStorage.setItem('token', res.data.token);

@@ -4,6 +4,7 @@ import { FaSearch, FaSlidersH } from 'react-icons/fa';
 import ProductCard from '../../components/ProductCard';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { BACKEND_URL } from '../backendURL';
 
 const categories = [
     { id: 'all', name: 'All', icon: '📚', color: 'emerald' },
@@ -33,10 +34,10 @@ const Marketplace = () => {
     const fetchProducts = async () => {
         try {
             setLoading(true);
-            let url = 'http://localhost:4001/products/fetchProduct';
+            let url = BACKEND_URL+'/products/fetchProduct';
             console.log("url:", url);
             if (selectedCategory !== 'all') {
-                url = `http://localhost:4001/products/getProductsByCategory/${selectedCategory}`;
+                url = BACKEND_URL+`/products/getProductsByCategory/${selectedCategory}`;
             }
             const response = await axios.get(url);
             setProducts(response.data.data);
@@ -69,7 +70,7 @@ const Marketplace = () => {
 
     const handleQuickView = async (productId) => {
         try {
-            const response = await axios.get(`http://localhost:4001/products/getProduct/${productId}`, {
+            const response = await axios.get(BACKEND_URL+`/products/getProduct/${productId}`, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`
                 }

@@ -5,6 +5,7 @@ import { FaGraduationCap, FaGoogle, FaGithub } from 'react-icons/fa';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import { useGoogleLogin } from '@react-oauth/google';
+import { BACKEND_URL } from './backendURL';
 
 const SignUp = () => {
     const navigate = useNavigate();
@@ -33,7 +34,7 @@ const SignUp = () => {
                 );
     
                 // Send to your backend
-                const response = await axios.post("http://localhost:4001/auth/signinGoogle", {
+                const response = await axios.post(BACKEND_URL+"/auth/signinGoogle", {
                     googleUser: userInfo.data
                 });
     
@@ -115,7 +116,7 @@ const SignUp = () => {
         }
 
         try {
-            await axios.post("http://localhost:4001/auth/sendOTP", { email: formData.email })
+            await axios.post(BACKEND_URL+"/auth/sendOTP", { email: formData.email })
             .then((r) => {
                     console.log(r.data)
                     console.log("OTP sent successfully "+r.data.otp);
@@ -160,7 +161,7 @@ const SignUp = () => {
     const handleResendOTP = async () => {
         setLoading(true);
         try {
-            await axios.post("http://localhost:4001/auth/sendOTP", { email: formData.email });
+            await axios.post(BACKEND_URL+"/auth/sendOTP", { email: formData.email });
             setTimeLeft(600);
         } catch (err) {
             setError(err.response?.data?.message);
@@ -179,14 +180,14 @@ const SignUp = () => {
             const enteredOTPStr = enteredOTP.toString();
             const sentOTPStr = sentOTP.toString();
             console.log(enteredOTPStr, sentOTPStr);
-            await axios.post("http://localhost:4001/auth/verifyOTP", {
+            await axios.post(BACKEND_URL+"/auth/verifyOTP", {
                 email: formData.email,
                 enteredotp: enteredOTPStr,
                 sentotp : sentOTPStr
             })
             .then(async (r) =>{
                 console.log("OTP Verified " + r);
-                await axios.post("http://localhost:4001/auth/signup", {email: formData.email, username: formData.username, phone: formData.phone, password: formData.password})
+                await axios.post(BACKEND_URL+"/auth/signup", {email: formData.email, username: formData.username, phone: formData.phone, password: formData.password})
                 .then((response) => {
                     console.log(response.data);
                     localStorage.setItem('token', response.data.token);

@@ -8,6 +8,7 @@ import {
 import NotesCard from "../../components/NoteCard";
 import axios from 'axios';
 import Header from '../../components/Header';
+import { BACKEND_URL } from '../backendURL';
 
 const useDebounce = (value, delay) => {
     const [debouncedValue, setDebouncedValue] = useState(value);
@@ -74,7 +75,7 @@ const NotesHub = () => {
     const fetchLatestNotes = async () => {
         try {
             setLoading(true);
-            const response = await axios.post('http://localhost:4001/notes/getLatestNotes', {
+            const response = await axios.post(BACKEND_URL+'/notes/getLatestNotes', {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`
                 }

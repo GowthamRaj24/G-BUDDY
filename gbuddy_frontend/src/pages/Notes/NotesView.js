@@ -4,6 +4,7 @@ import { FaDownload, FaBookmark, FaYoutube, FaUserGraduate, FaRegBookmark, FaPlu
 import { FaRegClock } from 'react-icons/fa';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import { BACKEND_URL } from '../backendURL';
 
 const NotesView = () => {
     const { noteId } = useParams();
@@ -20,7 +21,7 @@ const NotesView = () => {
 
     const fetchNoteData = async () => {
         try {
-            const response = await axios.get(`http://localhost:4001/notes/${noteId}`, {
+            const response = await axios.get(BACKEND_URL+`/notes/${noteId}`, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`
                 }
@@ -38,7 +39,7 @@ const NotesView = () => {
 
     const handleBookmark = async () => {
         try {
-            await axios.post('http://localhost:4001/notes/saveNote', {
+            await axios.post(BACKEND_URL+'/notes/saveNote', {
                 noteId,
                 userId: user._id
             }, {
@@ -67,7 +68,7 @@ const NotesView = () => {
         }
 
         try {
-            const response = await axios.post('http://localhost:4001/notes/contributeVideo', {
+            const response = await axios.post(BACKEND_URL+'/notes/contributeVideo', {
                 noteId,
                 videoTitle: videoData.title,
                 videoUrl: videoData.embedId

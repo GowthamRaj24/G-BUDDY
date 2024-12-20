@@ -6,6 +6,7 @@ import ProductCard from '../components/ProductCard';
 import NotesCard from '../components/NoteCard';
 import { FaEdit, FaLock, FaLinkedin, FaGithub, FaCode, FaPlus , FaTrash} from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import { BACKEND_URL } from './backendURL';
 
 const ProfilePage = () => {
     const [activeTab, setActiveTab] = useState('profile');
@@ -29,7 +30,7 @@ const ProfilePage = () => {
 
     const getNotesById = async () => {
         try {
-            const response = await axios.get(`http://localhost:4001/notes/fetchbyUser/${userId}`, {
+            const response = await axios.get(BACKEND_URL+`/notes/fetchbyUser/${userId}`, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`
                 }
@@ -48,7 +49,7 @@ const ProfilePage = () => {
             
             if (savedNoteIds.length === 0) return;
 
-            const response = await axios.post(`http://localhost:4001/notes/getSavedNotes`, {
+            const response = await axios.post(BACKEND_URL+`/notes/getSavedNotes`, {
                  noteIds: savedNoteIds 
             }, {
                 headers: {
@@ -64,7 +65,7 @@ const ProfilePage = () => {
 
     const fetchUserData = async () => {
         try {
-            const response = await axios.get(`http://localhost:4001/users/fetchUser/${userId}`, {
+            const response = await axios.get(BACKEND_URL+`/users/fetchUser/${userId}`, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`
                 }
@@ -77,7 +78,7 @@ const ProfilePage = () => {
 
     const fetchUserProducts = async () => {
         try {
-            const response = await axios.get('http://localhost:4001/products/fetchProductBySeller/'+userId, {
+            const response = await axios.get(BACKEND_URL+'/products/fetchProductBySeller/'+userId, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`
                 }
@@ -91,7 +92,7 @@ const ProfilePage = () => {
     };
 
     const fetchuserRoadmaps = async () => {
-        await axios.get("http://localhost:4001/roadmaps/roadmap/user/" + userId, {
+        await axios.get(BACKEND_URL+"/roadmaps/roadmap/user/" + userId, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
             }
@@ -322,7 +323,7 @@ const ProfilePage = () => {
             onClick={async () => {
                 if (window.confirm('Are you sure you want to delete this product?')) {
                     try {
-                        await axios.delete(`http://localhost:4001/products/deleteProduct/${product._id}`, {
+                        await axios.delete(BACKEND_URL+`/products/deleteProduct/${product._id}`, {
                             headers: {
                                 Authorization: `Bearer ${localStorage.getItem('token')}`
                             }
@@ -384,7 +385,7 @@ const ProfilePage = () => {
                 if (window.confirm('Are you sure you want to delete this note?')) {
                     try {
                         console.log(note)
-                        await axios.delete(`http://localhost:4001/notes/deleteNote/${note._id}`, {
+                        await axios.delete(BACKEND_URL+`/notes/deleteNote/${note._id}`, {
                             headers: {
                                 Authorization: `Bearer ${localStorage.getItem('token')}`
                             }
@@ -444,7 +445,7 @@ const ProfilePage = () => {
                                     onClick={async () => {
                                         if (window.confirm('Are you sure you want to delete this roadmap?')) {
                                             try {
-                                                await axios.delete(`http://localhost:4001/roadmaps/roadmap/${roadmap._id}`, {
+                                                await axios.delete(BACKEND_URL+`/roadmaps/roadmap/${roadmap._id}`, {
                                                     headers: {
                                                         Authorization: `Bearer ${localStorage.getItem('token')}`
                                                     }

@@ -4,6 +4,7 @@ import { FaArrowLeft, FaStar, FaGithub, FaLinkedin, FaWhatsapp } from 'react-ico
 import { SiLeetcode } from 'react-icons/si';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import { BACKEND_URL } from '../backendURL';
 
 const ProductView = () => {
     const navigate = useNavigate();
@@ -21,7 +22,7 @@ const ProductView = () => {
 
     const fetchSellerDetails = async () => {
     try {
-        const response = await axios.get(`http://localhost:4001/users/fetchUser/${product.sellerId}`, {
+        const response = await axios.get(BACKEND_URL+`/users/fetchUser/${product.sellerId}`, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
             }
@@ -38,7 +39,7 @@ const ProductView = () => {
 
     const fetchProductDetails = async () => {
         try {
-            const response = await axios.get(`http://localhost:4001/products/getProduct/${id}`, {
+            const response = await axios.get(BACKEND_URL+`/products/getProduct/${id}`, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`
                 }
