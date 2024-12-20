@@ -4,8 +4,8 @@ const usersSchema = require('../../models/users/usersSchema');
 
 const addNotes = async (req, res) => {
     try {
-        console.log("received file:", req.file);
         const fileUrl = await uploadToDrive(req.file);
+        console.log(fileUrl)
 
         const notes = await Notes.create({
             title: req.body.title,

@@ -1,19 +1,20 @@
 const express = require("express");
 const multer = require('multer');
-const upload = multer({ 
-    dest: 'uploads/',
-    limits: {
-        fileSize: 5 * 1024 * 1024 // 5MB limit
+const storage = multer.diskStorage({
+    destination: 'uploads/',
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + '-' + file.originalname)
     }
 });
+
+const upload = multer({ storage: storage });
+
 
 
 const addNotes = require("../controllers/notes/addNote");
 const fetchNotes = require("../controllers/notes/fetchNote.js");
 const contributeVideo = require("../controllers/notes/contributeVideo.js");
 const deleteNote = require("../controllers/notes/deleteNote.js");
-
-const middleware = require("../middleware/auth");
 
 const routes = express.Router();
 

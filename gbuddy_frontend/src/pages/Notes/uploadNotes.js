@@ -57,10 +57,12 @@ const UploadNotes = () => {
         }
     };
 
-    const handleSubmit = async (e) => {
-        setLoading(true);
-        console.log(formData);
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+    
+        // Validation checks
         if (!formData.file) {
             setLoading(false);
             return toast.error('Please upload a file', {
@@ -73,7 +75,7 @@ const UploadNotes = () => {
                 progress: undefined,
             });
         }
-
+    
         if (!formData.title || !formData.subject || !formData.sem || !formData.unit || !formData.description) {
             setLoading(false);
             return toast.error('Please fill all the fields', {
@@ -86,35 +88,36 @@ const UploadNotes = () => {
                 progress: undefined,
             });
         }
-
-
-        e.preventDefault();
-        await axios.post(BACKEND_URL+"/notes/addNotes", 
-            {
-                title: formData.title,
-                sem : formData.sem,
-                userId: JSON.parse(localStorage.getItem('user'))._id,
-                subject : formData.subject,
-                unit : formData.unit,
-                format : formData.file.type,
-                description : formData.description,
-                faculty : formData.faculty || '',
-                file : formData.file
-            }, {headers: {
-                 Authorization: `Bearer ${localStorage.getItem('token')}`,
-                'Content-Type': 'multipart/form-data'
-            }}
-        )
-
-      
-        .then((res) => {
-            console.log(res.data);
-            console.log('Form submitted:', formData);
+    
+        // Create FormData instance
+        const formDataToSend = new FormData();
+        formDataToSend.append('file', formData.file);
+        formDataToSend.append('title', formData.title);
+        formDataToSend.append('sem', formData.sem);
+        formDataToSend.append('userId', JSON.parse(localStorage.getItem('user'))._id);
+        formDataToSend.append('subject', formData.subject);
+        formDataToSend.append('unit', formData.unit);
+        formDataToSend.append('format', formData.file.type);
+        formDataToSend.append('description', formData.description);
+        formDataToSend.append('faculty', formData.faculty || '');
+    
+        try {
+            const response = await axios.post(
+                `${BACKEND_URL}/notes/addNotes`, 
+                formDataToSend,
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('token')}`,
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }
+            );
+            
+            console.log('Upload successful:', response.data);
             window.location.href = "/notes";
-        })
-        .catch((err) => {
+        } catch (error) {
             setLoading(false);
-            toast.error("File might be too Large to Upload", {
+            toast.error(error.response?.data?.message || "File might be too large to upload", {
                 position: "top-right",
                 autoClose: 3500,
                 hideProgressBar: false,
@@ -123,8 +126,9 @@ const UploadNotes = () => {
                 draggable: true,
                 progress: undefined,
             });
-        });
+        }
     };
+    
 
     return (
         <div className="min-h-screen bg-gray-50 py-12">

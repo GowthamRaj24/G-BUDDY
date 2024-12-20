@@ -11,8 +11,13 @@ const roadmapRoute = require('./routes/roadmap');
 const app = express();
 const port = 4001;
 
+app.use(cors({
+    origin: ['https://g-buddy.vercel.app', 'http://localhost:3000'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+  }));
+
 app.use(express.json());
-app.use(cors({origin : '*'}));
 connect.connect();
 
 app.use('/products', productRoute.route);
