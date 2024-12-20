@@ -25,7 +25,6 @@ const SignIn = () => {
                     { headers: { Authorization: `Bearer ${tokenResponse.access_token}` } }
                 );
     
-                // Send to your backend
                 const response = await axios.post(BACKEND_URL+"/auth/signinGoogle", {
                     googleUser: userInfo.data
                 });
