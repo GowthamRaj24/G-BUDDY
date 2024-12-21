@@ -12,9 +12,7 @@ const app = express();
 const port = 4001;
 
 app.use(cors({
-    origin: ['https://g-buddy.vercel.app', 'http://localhost:3000'],
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    origin: '*'
   }));
 
 app.use(express.json());
