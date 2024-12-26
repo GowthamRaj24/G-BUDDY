@@ -14,16 +14,15 @@ const credentials = {
     universal_domain: process.env.UNIVERSAL_DOMAIN
   };
 
-  const agent = new https.Agent({
-    rejectUnauthorized: true, 
-});
-
 
 const auth = new google.auth.GoogleAuth({
     credentials,
-    scopes: ['https://www.googleapis.com/auth/drive']
+    scopes: ['https://www.googleapis.com/auth/drive'],
+    clientOptions: {
+      crypto: { useOpenSSL: false }
+  }
 });
 
-const driveService = google.drive({ version: 'v3', auth, httpAgent: agent});
+const driveService = google.drive({ version: 'v3', auth});
 
 module.exports = driveService;

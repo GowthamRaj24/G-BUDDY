@@ -19,6 +19,7 @@
     "google-auth-library": "^9.15.0",
     "googleapi": "^1.0.2",
     "googleapis": "^144.0.0",
+    "gtoken": "^7.1.0",
     "https": "^1.0.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.9.1",
