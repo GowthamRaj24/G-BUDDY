@@ -61,10 +61,6 @@ const saveNote = async (req, res) => {
                 message: "Note Removed from Save successfully"
             });
         }
-
-
-        
-
     } catch (error) {
         res.status(400).json({
             success: false,

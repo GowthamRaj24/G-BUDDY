@@ -4,28 +4,38 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js",
+    "start": "node --trace-deprecation index.js",
     "build": "npm install"
   },
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "autocannon": "^8.0.0",
     "aws-sdk": "^2.1692.0",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "google-auth-library": "^9.15.0",
     "googleapi": "^1.0.2",
     "googleapis": "^144.0.0",
+    "gtoken": "^7.1.0",
+    "https": "^1.0.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.9.1",
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.16",
     "nodemon": "^3.1.9",
     "path": "^0.12.7",
+    "pino": "^9.6.0",
+    "pino-pretty": "^13.0.0",
+    "prometheus-client": "^0.1.1",
     "stream": "^0.0.3",
     "util": "^0.12.5"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }
