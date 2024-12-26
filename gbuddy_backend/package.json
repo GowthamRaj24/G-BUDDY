@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "cross-env NODE_OPTIONS='--openssl-legacy-provider' node server.js",
+     "start": "NODE_OPTIONS='--use-openssl-ca' node server.js",
     "build": "npm install"
   },
   "author": "",
