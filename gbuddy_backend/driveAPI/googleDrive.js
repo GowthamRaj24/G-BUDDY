@@ -1,4 +1,5 @@
 const { google } = require('googleapis');
+const https = require('https');
 require('dotenv').config();
 const credentials = {
     client_id: process.env.CLIENT_ID,
@@ -13,11 +14,16 @@ const credentials = {
     universal_domain: process.env.UNIVERSAL_DOMAIN
   };
 
+  const agent = new https.Agent({
+    rejectUnauthorized: true, 
+});
+
+
 const auth = new google.auth.GoogleAuth({
     credentials,
     scopes: ['https://www.googleapis.com/auth/drive']
 });
 
-const driveService = google.drive({ version: 'v3', auth });
+const driveService = google.drive({ version: 'v3', auth, httpAgent: agent});
 
 module.exports = driveService;
