@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-     "start": "NODE_OPTIONS='--use-openssl-ca' node server.js",
+     "start": "node index.js",
     "build": "npm install"
   },
   "author": "",
@@ -30,5 +30,8 @@
     "path": "^0.12.7",
     "stream": "^0.0.3",
     "util": "^0.12.5"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }
