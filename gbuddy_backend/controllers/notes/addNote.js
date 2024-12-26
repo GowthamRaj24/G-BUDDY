@@ -22,7 +22,7 @@ const addNotes = async (req, res) => {
 
         console.log("notes:", notes);
 
-        res.status(201).json({
+        res.status(201).json(ACC{
             success: true,
             data: notes,
             message: "Notes added successfully"
