@@ -161,7 +161,7 @@ const NotesCard = ({ note }) => {
                     <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
                         <FaUserGraduate className="text-lg text-emerald-500" />
                         <div>
-                            <p className="text-xs text-gray-500 font-medium">Faculty</p>
+                            <p className="text-xs text-gray-500 font-medium">Faculty / Author</p>
                             <p className="text-sm text-gray-700">{note.faculty || 'Not specified'}</p>
                         </div>
                     </div>
