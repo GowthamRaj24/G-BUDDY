@@ -146,7 +146,7 @@ const NotesCard = ({ note }) => {
                     {note.title}
                 </h3>
                 <p className="text-gray-600 text-sm leading-relaxed mb-6">
-                    {note.description}
+                    {note.description.slice(0, 100)}...
                 </p>
 
                 {/* Info Grid */}

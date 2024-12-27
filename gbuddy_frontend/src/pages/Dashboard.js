@@ -1,11 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import image from "./developer-avatar.jpg";
-import { useNavigate } from 'react-router-dom';
 import { 
     FaPython, FaJava, FaHtml5, FaCss3, FaServer, 
-    FaLightbulb, FaUsers, FaCode ,FaStore , FaCalendarAlt, FaCloud, FaRobot
+    FaLightbulb,  FaCode ,FaStore , FaCalendarAlt, FaCloud, FaRobot
 } from 'react-icons/fa';
 import { 
     SiTypescript, SiC, SiMysql, SiPostgresql, 
@@ -14,8 +13,8 @@ import {
 
 import { 
     FaGraduationCap, FaBook,  
-    FaRocket, FaChalkboardTeacher, FaLaptopCode, 
-    FaBriefcase, FaSearch, FaCloudUploadAlt, FaTrophy
+     FaChalkboardTeacher, FaLaptopCode, 
+     FaSearch
 } from 'react-icons/fa';
 import  Navbar  from '../components/Navbar';
 import { 
@@ -25,16 +24,13 @@ import {
     FaReact, 
     FaJs, 
     FaNodeJs, 
-    FaGit, 
-    FaDocker, 
+    FaGit
 } from 'react-icons/fa';
 import { SiTailwindcss, SiExpress, SiMongodb } from 'react-icons/si';
 import "./main.css"
 
 import { PrimaryButton, SecondaryButton } from '../components/Button';
 import { FeatureCard } from '../components/Card';
-import axios from 'axios';
-import { BACKEND_URL } from './backendURL';
 
 const Dashboard = () => {
 
