@@ -23,6 +23,7 @@ const RoadmapHome = () => {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
+                const userId = JSON.parse(localStorage.getItem('user'))._id;
                 const response = await axios.get(BACKEND_URL+`/users/fetchUser/${userId}`, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('token')}`
