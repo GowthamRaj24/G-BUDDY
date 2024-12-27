@@ -77,7 +77,7 @@ const UploadNotes = () => {
             });
         }
     
-        if (!formData.title || !formData.subject || !formData.sem || !formData.unit || !formData.description) {
+        if (!formData.title || !formData.subject || !formData.unit || !formData.description) {
             setLoading(false);
             return toast.error('Please fill all the fields', {
                 position: "top-right",
@@ -336,8 +336,8 @@ const UploadNotes = () => {
                                     <p className="font-medium">{formData.subject}</p>
                                 </div>
                                 <div>
-                                    <p className="text-sm text-gray-500">Semester</p>
-                                    <p className="font-medium">{formData.sem}</p>
+                                    <p className="text-sm text-gray-500">Faculty</p>
+                                    <p className="font-medium">{formData.faculty}</p>
                                 </div>
                                 <div>
                                     <p className="text-sm text-gray-500">Unit</p>
