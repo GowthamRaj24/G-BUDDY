@@ -29,7 +29,8 @@ const RoadmapHome = () => {
                         Authorization: `Bearer ${localStorage.getItem('token')}`
                     }
               });
-                setUsername(response.data.data.name);
+                setUsername(response.data.data.username);
+                console.log('User data:', response.data.data.username);
             } catch (error) {
                 console.log('Error fetching user data:', error);
             }
