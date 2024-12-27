@@ -21,19 +21,20 @@ const RoadmapHome = () => {
     ]);
     
     useEffect(() => {
-        const fetchUserById = async () => {
+        const fetchUserData = async () => {
             try {
-                const userId = JSON.parse(localStorage.getItem('user'))._id;
-                const response = await axios.get(BACKEND_URL+`/users/`+userId, {
+                const response = await axios.get(BACKEND_URL+`/users/fetchUser/${userId}`, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('token')}`
                     }
-                });
+              });
                 setUsername(response.data.data.name);
             } catch (error) {
-                console.error('Error fetching user:', error);
-        }
-    }
+                console.log('Error fetching user data:', error);
+            }
+        };
+
+
         const fetchRoadmaps = async () => {
             try {
                 const response = await axios.get(BACKEND_URL+'/roadmaps/roadmaps', {
@@ -58,7 +59,7 @@ const RoadmapHome = () => {
             }
         };
         fetchRoadmaps();
-        fetchUserById();
+        fetchUserData();
     }, []);
     
 
