@@ -174,9 +174,6 @@ const NotesCard = ({ note }) => {
                         <span>{formattedDate}</span>
                     </div>
                     <div className="flex items-center space-x-2">
-                        <span className="px-3 py-1 bg-emerald-50 text-emerald-600 rounded-full font-medium">
-                            Sem {note.sem}
-                        </span>
                         <span className="px-3 py-1 bg-blue-50 text-blue-600 rounded-full font-medium">
                             Unit {note.unit}
                         </span>

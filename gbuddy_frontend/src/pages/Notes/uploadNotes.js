@@ -20,7 +20,7 @@ const UploadNotes = () => {
         subject: '',
         sem: '',
         unit: '',
-        faculty: 'DSA',
+        faculty: '',
         file: null
     });
 
@@ -241,25 +241,20 @@ const UploadNotes = () => {
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Semester
+                                    Faculty
                                 </label>
-                                <select
-                                    value={formData.sem}
+                                <input
+                                    type="text"
+                                    value={formData.faculty}
                                     onChange={(e) => setFormData(prev => ({
                                         ...prev,
-                                        sem: e.target.value
+                                        faculty: e.target.value
                                     }))}
                                     className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-emerald-500"
                                     required
-                                >
-                                    <option value="">Select Semester</option>
-                                    {[1,2,3,4,5,6,7,8].map(sem => (
-                                        <option key={sem} value={sem}>
-                                            Semester {sem}
-                                        </option>
-                                    ))}
-                                </select>
+                                />
                             </div>
+
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
                                     Unit
