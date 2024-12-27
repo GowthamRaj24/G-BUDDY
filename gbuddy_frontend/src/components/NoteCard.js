@@ -30,14 +30,32 @@ const NotesCard = ({ note }) => {
   const [saved, setSaved] = useState(false);
   const user = JSON.parse(localStorage.getItem('user'));
   const navigate = useNavigate();
-
+    const [uploaderUsername, setUploaderUsername] = useState('');
+    
   
-
+useEffect(()=>{
+    fetchUploaderUsername();
+} , [])
+  
   useEffect(() => {
-      if (user.savedNotes?.includes(note._id)) {
-          setSaved(true);
-      }
+    if (user.savedNotes?.includes(note._id)) {
+      setSaved(true);
+    }
+    
   }, [note._id, user.savedNotes]);
+
+  const fetchUploaderUsername = async () => {
+    try {
+      const response = await axios.get(BACKEND_URL+`/users/fetchUser/${note.userId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+      setUploaderUsername(response.data.data.username);
+    } catch (error) {
+      console.log('Error fetching uploader data:', error);
+    }
+  };
 
   const handleSave = async () => {
       try {
@@ -177,6 +195,13 @@ const NotesCard = ({ note }) => {
                         <span className="px-3 py-1 bg-blue-50 text-blue-600 rounded-full font-medium">
                             Unit {note.unit}
                         </span>
+                    </div>
+                </div>
+                <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                    <FaUserGraduate className="text-lg text-emerald-500" />
+                    <div className="flex flex-row items-center space-x-2">
+                    <p className="text-xs text-gray-500 font-medium">Uploaded By</p>
+                    <p className="text-sm text-gray-700">{uploaderUsername || 'Unknown User'}</p>
                     </div>
                 </div>
 
