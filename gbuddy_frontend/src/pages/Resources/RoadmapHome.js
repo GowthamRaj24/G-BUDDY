@@ -10,6 +10,7 @@ const RoadmapHome = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [roadmaps, setRoadmaps] = useState([]);
     const [filteredRoadmaps, setFilteredRoadmaps] = useState([]);
+    const [username , setUsername] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('');
 
     const [categories, setCategories] = useState([
@@ -20,6 +21,19 @@ const RoadmapHome = () => {
     ]);
     
     useEffect(() => {
+        const fetchUserById = async () => {
+            try {
+                const userId = JSON.parse(localStorage.getItem('user'))._id;
+                const response = await axios.get(BACKEND_URL+`/users/`+userId, {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+                setUsername(response.data.data.name);
+            } catch (error) {
+                console.error('Error fetching user:', error);
+        }
+    }
         const fetchRoadmaps = async () => {
             try {
                 const response = await axios.get(BACKEND_URL+'/roadmaps/roadmaps', {
@@ -44,6 +58,7 @@ const RoadmapHome = () => {
             }
         };
         fetchRoadmaps();
+        fetchUserById();
     }, []);
     
 
@@ -159,7 +174,7 @@ const RoadmapHome = () => {
                                 <h3 className="text-xl font-bold text-gray-800 mb-2 group-hover:text-emerald-600 transition-colors">
                                     {roadmap.title}
                                 </h3>
-                                <p className="text-gray-600">By {roadmap.author?.name || 'Anonymous'}</p>
+                                <p className="text-gray-600">By {username || 'Anonymous'}</p>
                                 <div className="mt-4 pt-4 border-t border-gray-100 flex justify-between items-center">
                                     <span className="text-sm text-gray-500">{roadmap.difficulty}</span>
                                     <button 
