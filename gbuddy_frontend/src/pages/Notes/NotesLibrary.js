@@ -195,16 +195,6 @@ const NotesLibrary = () => {
                                 className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 border-t border-gray-100"
                             >
                                 <select
-                                    value={filters.semester}
-                                    onChange={(e) => setFilters({...filters, semester: e.target.value})}
-                                    className="px-4 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-emerald-500"
-                                >
-                                    <option value="">All Semesters</option>
-                                    {[1,2,3,4,5,6,7,8].map(sem => (
-                                        <option key={sem} value={sem}>Semester {sem}</option>
-                                    ))}
-                                </select>
-                                <select
                                     value={filters.subject}
                                     onChange={(e) => setFilters({...filters, subject: e.target.value})}
                                     className="px-4 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-emerald-500"
@@ -212,6 +202,10 @@ const NotesLibrary = () => {
                                     <option value="">All Subjects</option>
                                     <option value="Data Structures">Data Structures</option>
                                     <option value="Machine Learning">Machine Learning</option>
+                                    <option value="Design Analysis and algorithm">Design Analysis and algorithm</option>
+                                    <option value="Data Communications">Data Communications</option>
+
+
                                 </select>
                                 <select
                                     value={filters.unit}
