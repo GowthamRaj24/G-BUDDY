@@ -21,6 +21,7 @@ import RoadmapView from './pages/Resources/RoadmapView';
 import RoadmapHome from './pages/Resources/RoadmapHome';
 import CreateRoadmap from './pages/Resources/CreateRoadmap';
 import {GoogleOAuthProvider} from '@react-oauth/google';
+import EditNotes from './pages/Notes/editNotes';
 
 const Layout = ({ children }) => {
   return (
@@ -59,6 +60,7 @@ function App() {
         <Route path='/editprofile' element={<Layout><EditProfile/></Layout>}/>
         <Route path='/roadmap/:id' element={<Layout><RoadmapView/></Layout>}/>
         <Route path='/roadmaps/create' element={<Layout><CreateRoadmap/></Layout>}/>
+        <Route path='/notes/edit/:id' element={<Layout><EditNotes/></Layout>}/>
       </Routes>
     </BrowserRouter>
     </GoogleOAuthProvider>

@@ -16,6 +16,7 @@ const addNotes = require("../controllers/notes/addNote");
 const fetchNotes = require("../controllers/notes/fetchNote.js");
 const contributeVideo = require("../controllers/notes/contributeVideo.js");
 const deleteNote = require("../controllers/notes/deleteNote.js");
+const updateNote = require("../controllers/notes/updateNote.js");
 
 const routes = express.Router();
 
@@ -30,6 +31,7 @@ routes
     .post("/contributeVideo", contributeVideo.contributeVideo)
     .post("/getLatestNotes", fetchNotes.getLatestNotes)
     .post("/searchNotes",fetchNotes.searchNotes)
+    .put("/updateNote/:id", upload.single("file"), updateNote.editNotes)
     .delete("/deleteNote/:id", deleteNote.deleteNote);  
 
 

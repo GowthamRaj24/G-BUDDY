@@ -7,6 +7,8 @@ import NotesCard from '../components/NoteCard';
 import { FaEdit, FaLock, FaLinkedin, FaGithub, FaCode, FaPlus , FaTrash} from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { BACKEND_URL } from './backendURL';
+import { Link } from 'react-router-dom';
+
 
 const ProfilePage = () => {
     const [activeTab, setActiveTab] = useState('profile');
@@ -380,28 +382,36 @@ const ProfilePage = () => {
                                 {mynotes.map((note) => (
     <div key={note._id} className="relative">
         <NotesCard note={note} />
-        <button
-            onClick={async () => {
-                if (window.confirm('Are you sure you want to delete this note?')) {
-                    try {
-                        console.log(note)
-                        await axios.delete(BACKEND_URL+`/notes/deleteNote/${note._id}`, {
-                            headers: {
-                                Authorization: `Bearer ${localStorage.getItem('token')}`
-                            }
-                      });
-                        getNotesById(); // Refresh the list
-                    } catch (error) {
-                        console.error('Error deleting note:', error);
+        <div className="absolute top-2 right-2 flex gap-2">
+            <Link 
+                to={`/notes/edit/${note._id}`}
+                className="text-blue-500 hover:text-blue-600 bg-white rounded-full p-2 shadow-md"
+            >
+                <FaEdit className="w-4 h-4" />
+            </Link>
+            <button
+                onClick={async () => {
+                    if (window.confirm('Are you sure you want to delete this note?')) {
+                        try {
+                            await axios.delete(BACKEND_URL+`/notes/deleteNote/${note._id}`, {
+                                headers: {
+                                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                                }
+                            });
+                            getNotesById();
+                        } catch (error) {
+                            console.error('Error deleting note:', error);
+                        }
                     }
-                }
-            }}
-            className="absolute top-2 right-2 text-red-500 hover:text-red-600 bg-white rounded-full p-2 shadow-md"
-        >
-            <FaTrash className="w-4 h-4" />
-        </button>
+                }}
+                className="text-red-500 hover:text-red-600 bg-white rounded-full p-2 shadow-md"
+            >
+                <FaTrash className="w-4 h-4" />
+            </button>
+        </div>
     </div>
 ))}
+
 
                             </div>
                         )}
